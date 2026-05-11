@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Fstudio.Models.Entities;
+namespace Fstudio.Data.Models;
 
 public class Fotografia
 {
