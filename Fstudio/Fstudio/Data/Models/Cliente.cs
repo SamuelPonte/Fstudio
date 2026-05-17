@@ -3,56 +3,122 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fstudio.Data.Models;
 
+/// <summary>
+/// Representa um cliente do sistema, contendo os seus dados pessoais,
+/// informações sobre o evento e as fotografias/serviços associados.
+/// </summary>
 public class Cliente
 {
+    /// <summary>
+    /// PK
+    /// </summary>
+    [Key]
     public int Id { get; set; }
 
-    [Required(ErrorMessage = "O nome é obrigatório")]
-    [StringLength(200, ErrorMessage = "O nome não pode exceder 200 caracteres")]
+    /// <summary>
+    /// Nome do cliente
+    /// </summary>
+    [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
+    [StringLength(200, MinimumLength = 2, ErrorMessage = "O {0} deve ter entre {2} e {1} caracteres")]
     [Display(Name = "Nome")]
-    public string Nome { get; set; } = string.Empty;
+    public string Nome { get; set; } = string.Empty; // Obrigatório
 
-    [Required(ErrorMessage = "O email é obrigatório")]
-    [EmailAddress(ErrorMessage = "Email inválido")]
-    [StringLength(256)]
+    /// <summary>
+    /// Endereço de email do cliente
+    /// </summary>
+    [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
+    [EmailAddress(ErrorMessage = "O {0} é inválido")]
+    [StringLength(256, ErrorMessage = "O {0} não pode exceder {1} caracteres")]
     [Display(Name = "Email")]
-    public string Email { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty; // Obrigatório
 
-    [Phone(ErrorMessage = "Telefone inválido")]
-    [StringLength(20)]
+    /// <summary>
+    /// Numero de telemóvel do cliente
+    /// </summary>
+    [Phone(ErrorMessage = "O {0} é inválido")]
+    [StringLength(20, ErrorMessage = "O {0} não pode exceder {1} caracteres")]
     [Display(Name = "Telefone")]
-    public string? Telefone { get; set; }
+    public string? Telefone { get; set; } // Opcional
 
+    /// <summary>
+    /// Data prevista para o evento associado ao cliente.
+    /// </summary>
     [Display(Name = "Data do Evento")]
     [DataType(DataType.Date)]
-    public DateTime? DataEvento { get; set; }
+    public DateTime? DataEvento { get; set; } // Opcional
 
-    [StringLength(100)]
+    /// <summary>
+    /// Tipo de serviço pretendido pelo cliente.
+    /// </summary>
+    [StringLength(100, ErrorMessage = "O {0} não pode exceder {1} caracteres")]
     [Display(Name = "Tipo de Serviço")]
-    public string? TipoServico { get; set; }
+    public string? TipoServico { get; set; } // Opcional
 
-    [Required]
-    [StringLength(50)]
+    /// <summary>
+    /// Estado do cliente (Ativo, Inativo, etc.)
+    /// </summary>
+    [Required (ErrorMessage = "O {0} é de preenchimento obrigatório")]
+    [StringLength(50, ErrorMessage = "O {0} não pode exceder {1} caracteres")]
     [Display(Name = "Estado")]
-    public string Estado { get; set; } = "Ativo";
+    public EstadoCliente Estado { get; set; } = EstadoCliente.Ativo; // Valor padrão "Ativo"
 
-    [StringLength(2000)]
+    /// <summary>
+    /// Notas adicionais sobre o cliente, o evento ou o serviço pretendido.
+    /// </summary>
+    [StringLength(2000, ErrorMessage = "As {0} não podem exceder {1} caracteres")]
     [Display(Name = "Notas")]
-    public string? Notas { get; set; }
+    public string? Notas { get; set; } // Opcional
 
+    /// <summary>
+    /// Data de criação do cliente no sistema, 
+    /// definida automaticamente na criação do registo
+    /// </summary>
     [Display(Name = "Data de Criação")]
     public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
 
-    // Relação 1:1 com ApplicationUser
+
+    /* ******************************************
+     * Relacionamentos 1-1
+     * ****************************************** */
+    /// <summary>
+    /// FK para a tabela AspNetUsers, associando o cliente a um utilizador autenticado.
+    /// </summary>
     [Display(Name = "Utilizador")]
     public string? UserId { get; set; }
 
+    /// <summary>
+    /// Utilizador autenticado associado ao cliente.
+    /// </summary>
     [ForeignKey("UserId")]
     public ApplicationUser? User { get; set; }
 
-    // Relação N:N com Fotografia via ClienteFotografia
+
+    /* ******************************************
+     * Relacionamentos N-N
+     * ****************************************** */
+    /// <summary>
+    /// Lista de fotografias associadas ao cliente, 
+    /// representando os serviços de fotografia reservados.
+    /// </summary>
     public ICollection<ClienteFotografia> ClienteFotografias { get; set; } = new List<ClienteFotografia>();
 
-    // Relação 1:N com Testemunho
+
+    /* ******************************************
+     * Relacionamentos 1-N
+     * ****************************************** */
+    /// <summary>
+    /// Testemunhos deixados pelo cliente, 
+    /// representando o feedback e avaliações dos serviços de fotografia.
+    /// </summary>
     public ICollection<Testemunho> Testemunhos { get; set; } = new List<Testemunho>();
+}
+
+/// <summary>
+/// Classe de enumeração para representar o estado do cliente
+/// </summary>
+public enum EstadoCliente
+{
+    Ativo,
+    Inativo,
+    Pendente
 }
