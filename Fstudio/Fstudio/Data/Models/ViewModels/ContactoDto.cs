@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Fstudio.Models.ViewModels;
+namespace Fstudio.Data.Models.ViewModels;
 
 public class ContactoDto
 {
