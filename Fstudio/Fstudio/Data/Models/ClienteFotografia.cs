@@ -12,10 +12,30 @@ namespace Fstudio.Data.Models;
 public class ClienteFotografia
 {
     /// <summary>
-    /// PK
+    /// PK e FK para o cliente associado a esta fotografia.
     /// </summary>
-    [Key]
-    public int Id { get; set; }
+    [Required]
+    [Display(Name = "Cliente")]
+    public int ClienteId { get; set; }
+
+    /// <summary>
+    /// Cliente associado a esta fotografia.
+    /// </summary>
+    [ForeignKey("ClienteId")]
+    public Cliente? Cliente { get; set; }
+
+    /// <summary>
+    /// PK eFK para a fotografia associada a este cliente.
+    /// </summary>
+    [Required]
+    [Display(Name = "Fotografia")]
+    public int FotografiaId { get; set; }
+
+    /// <summary>
+    /// Fotografia associada a este cliente.
+    /// </summary>
+    [ForeignKey("FotografiaId")]
+    public Fotografia? Fotografia { get; set; }
 
     /// <summary>
     /// Data em que a fotografia foi associada ao cliente.
@@ -36,37 +56,4 @@ public class ClienteFotografia
     /// </summary>
     [Display(Name = "Data de Download")]
     public DateTime? DataDownload { get; set; }
-
-    /* ***************************************
-     * Relacionamento 
-     * ****************************************** */
-    /// <summary>
-    /// FK para o cliente associado a esta fotografia.
-    /// </summary>
-    [Required]
-    [Display(Name = "Cliente")]
-    public int ClienteId { get; set; }
-
-    /// <summary>
-    /// Cliente associado a esta fotografia.
-    /// </summary>
-    [ForeignKey("ClienteId")]
-    public Cliente? Cliente { get; set; }
-
-
-    /* ***************************************
-     * Relacionamento 
-     * ****************************************** */
-    /// <summary>
-    /// FK para a fotografia associada a este cliente.
-    /// </summary>
-    [Required]
-    [Display(Name = "Fotografia")]
-    public int FotografiaId { get; set; }
-
-    /// <summary>
-    /// Fotografia associada a este cliente.
-    /// </summary>
-    [ForeignKey("FotografiaId")]
-    public Fotografia? Fotografia { get; set; }
 }
