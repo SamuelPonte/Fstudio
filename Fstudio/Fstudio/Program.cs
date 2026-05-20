@@ -1,63 +1,118 @@
+// ============================================================================
+// Program.cs
+// Ponto de entrada da aplicação ASP.NET Core
+// Configura todos os serviços, middleware e pipeline de request/response
+// ============================================================================
+
 using Fstudio.Data;
-using Fstudio.Data.Models;
+using Fstudio.Data.Seed;
+using Fstudio.Hubs;
+using Fstudio.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+// ============================================================================
+// CRIAÇÃO DO BUILDER
+// O WebApplicationBuilder é usado para configurar serviços e definições
+// ============================================================================
 var builder = WebApplication.CreateBuilder(args);
 
+// ============================================================================
+// CONFIGURAÇÃO DA BASE DE DADOS
+// ============================================================================
 
+// Obter a connection string do ficheiro appsettings.json
+// Se não existir, lança uma exceção (fail-fast pattern)
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-/* ******************************************
- * Configuração da base de dados
- * ****************************************** */
-
-// Obtém a string de ligação à base de dados a partir do ficheiro appsettings.json.
-// Caso a string "DefaultConnection" não exista, é lançada uma exceção.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-
-// Regista o ApplicationDbContext na aplicação e configura o Entity Framework Core
-// para usar SQL Server como sistema de gestão de base de dados
+// Registar o DbContext no container de Dependency Injection
+// UseSqlite - utiliza SQLite como base de dados (ficheiro local)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlite(connectionString));
 
-// Adiciona uma página de erro detalhada para problemas relacionados com a base de dados.
-// Esta funcionalidade é útil durante o desenvolvimento.
+// Adicionar página de exceções para desenvolvimento (mostra erros de BD)
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+// ============================================================================
+// CONFIGURAÇÃO DO IDENTITY (AUTENTICAÇÃO E AUTORIZAÇÃO)
+// ============================================================================
 
-
-
-
-/* ******************************************
- * Configuração do ASP.NET Core Identity
- * ****************************************** */
-
-// Configura o sistema de autenticação da aplicação usando a classe personalizada ApplicationUser.
-// Esta classe estende IdentityUser e permite guardar dados adicionais do utilizador,
-// como o nome completo e a data de criação.
-builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+// Configurar ASP.NET Core Identity com suporte para roles
+// ApplicationUser - classe customizada que estende IdentityUser
+// IdentityRole - classe padrão para gestão de roles
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
-    // Obriga os utilizadores a confirmarem a conta antes de conseguirem iniciar sessão.
-    // Normalmente, esta confirmação é feita através de email.
-    options.SignIn.RequireConfirmedAccount = true;
+    // Configurações de Sign In
+    options.SignIn.RequireConfirmedAccount = false;  // Não exigir confirmação de email
+
+    // Configurações de Password (requisitos de segurança)
+    options.Password.RequireDigit = true;            // Exigir pelo menos 1 número
+    options.Password.RequireLowercase = true;        // Exigir letra minúscula
+    options.Password.RequireUppercase = true;        // Exigir letra maiúscula
+    options.Password.RequireNonAlphanumeric = true;  // Exigir caractere especial (!@#$...)
+    options.Password.RequiredLength = 8;             // Mínimo 8 caracteres
 })
-    // Adiciona suporte a roles/perfis de utilizador, como "Administrador" e "Cliente".
-    .AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<ApplicationDbContext>()   // Usar EF Core para armazenar dados
+.AddDefaultTokenProviders()                          // Tokens para reset password, etc.
+.AddDefaultUI();                                     // UI padrão do Identity (Login, Register, etc.)
 
-    // Indica que o Identity deve guardar os seus dados usando o ApplicationDbContext.
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+// Configurar caminhos dos cookies de autenticação
+// Define para onde redirecionar em cada situação
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login";           // Página de login
+    options.LogoutPath = "/Identity/Account/Logout";         // Página de logout
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";  // Acesso negado
+});
 
+// ============================================================================
+// CONFIGURAÇÃO DE RAZOR PAGES E ÁREAS
+// ============================================================================
 
+// Adicionar suporte a Razor Pages com autorização por área
+builder.Services.AddRazorPages(options =>
+{
+    // Proteger toda a área Admin - só acessível por utilizadores com role "Admin"
+    options.Conventions.AuthorizeAreaFolder("Admin", "/", "Admin");
 
+    // Proteger toda a área Cliente - só acessível por utilizadores com role "Cliente"
+    options.Conventions.AuthorizeAreaFolder("Cliente", "/", "Cliente");
+});
 
+// ============================================================================
+// CONFIGURAÇÃO DE API REST
+// ============================================================================
 
-/* ******************************************
- * Configuração das Razor Pages
- * ****************************************** */
+// Adicionar suporte a Controllers (para endpoints API)
+builder.Services.AddControllers();
 
-// Adiciona suporte a Razor Pages, permitindo criar páginas dinâmicas
-// para a interface web da aplicação.
-builder.Services.AddRazorPages();
+// ============================================================================
+// CONFIGURAÇÃO DE SIGNALR (COMUNICAÇÃO EM TEMPO REAL)
+// ============================================================================
+
+// Adicionar SignalR para notificações em tempo real
+// Usado para notificar admins quando há novos contactos
+builder.Services.AddSignalR();
+
+// ============================================================================
+// POLÍTICAS DE AUTORIZAÇÃO
+// ============================================================================
+
+// Definir políticas nomeadas para autorização
+// Podem ser usadas em controllers/pages com [Authorize(Policy = "Admin")]
+builder.Services.AddAuthorization(options =>
+{
+    // Política "Admin" - requer role Admin
+    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+
+    // Política "Cliente" - requer role Cliente
+    options.AddPolicy("Cliente", policy => policy.RequireRole("Cliente"));
+});
+
+// ============================================================================
+// CONSTRUÇÃO DA APLICAÇÃO
+// ============================================================================
 
 
 /* ******************************************
@@ -66,63 +121,70 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
+// ============================================================================
+// SEED DA BASE DE DADOS
+// ============================================================================
 
+// Popular a base de dados com dados iniciais (roles, users, categorias)
+// Executado uma vez no arranque da aplicação
+await DataSeeder.SeedAsync(app.Services);
 
+// ============================================================================
+// CONFIGURAÇÃO DO PIPELINE HTTP
+// ============================================================================
 
-
-/* ******************************************
- * Configuração do pipeline HTTP
- * ****************************************** */
-
-// Se a aplicação estiver em ambiente de desenvolvimento,
-// ativa a página de migrations para facilitar a gestão da base de dados.
+// Configurações específicas por ambiente (Development vs Production)
 if (app.Environment.IsDevelopment())
 {
+    // Em desenvolvimento: mostrar página de erros de migrações
     app.UseMigrationsEndPoint();
 }
 else
 {
-    // Em ambiente de produção, redireciona erros para uma página genérica.
+    // Em produção: usar handler de erros genérico
     app.UseExceptionHandler("/Error");
 
-    // Ativa HSTS, aumentando a segurança ao forçar o uso de HTTPS.
+    // Usar páginas de erro personalizadas (404, 500, etc.)
+    app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
+
+    // Ativar HSTS (HTTP Strict Transport Security)
     app.UseHsts();
 }
 
-// Redireciona automaticamente pedidos HTTP para HTTPS.
+// Redirecionar HTTP para HTTPS
 app.UseHttpsRedirection();
 
-// Ativa o sistema de routing da aplicação.
+// Ativar routing (necessário para mapear endpoints)
 app.UseRouting();
 
-// Ativa o sistema de autorização.
-// Deve ser usado para proteger páginas ou funcionalidades com [Authorize].
+// Middleware de autenticação (identificar o utilizador)
+// IMPORTANTE: Deve vir antes de UseAuthorization
+app.UseAuthentication();
+
+// Middleware de autorização (verificar permissões)
 app.UseAuthorization();
 
+// ============================================================================
+// MAPEAMENTO DE ENDPOINTS
+// ============================================================================
 
-
-
-
-
-/* ******************************************
- * Configuração dos ficheiros estáticos e rotas
- * ****************************************** */
-
-// Permite servir ficheiros estáticos, como CSS, JavaScript e imagens.
+// Servir ficheiros estáticos (CSS, JS, imagens de wwwroot)
 app.MapStaticAssets();
 
-// Mapeia as Razor Pages da aplicação e associa os ficheiros estáticos necessários.
+// Mapear Razor Pages
 app.MapRazorPages()
    .WithStaticAssets();
 
+// Mapear Controllers da API REST
+// Endpoints disponíveis: /api/fotografias, /api/categorias, /api/contactos
+app.MapControllers();
 
+// Mapear Hub SignalR para notificações em tempo real
+// Os clientes ligam-se a: /hubs/notificacao
+app.MapHub<NotificacaoHub>("/hubs/notificacao");
 
+// ============================================================================
+// INICIAR A APLICAÇÃO
+// ============================================================================
 
-
-
-/* ******************************************
- * Execução da aplicação
- * ****************************************** */
-
-// Inicia a aplicação web.
 app.Run();
