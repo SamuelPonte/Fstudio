@@ -1,4 +1,5 @@
 using Fstudio.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -68,6 +69,25 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         // Mantém todas as configurações internas do ASP.NET Core Identity.
         // Esta chamada é obrigatória quando se herda de IdentityDbContext.
         base.OnModelCreating(builder);
+
+        /*
+         * Configuração das chaves primárias do ASP.NET Core Identity.
+         * O SQL Server não permite usar nvarchar(max) como chave primária ou índice.
+         * Por isso, os identificadores das tabelas Identity devem ter tamanho limitado.
+         */
+        builder.Entity<ApplicationUser>(entity =>
+        {
+            entity.Property(e => e.Id)
+                .HasColumnType("nvarchar(450)")
+                .HasMaxLength(450);
+        });
+
+        builder.Entity<IdentityRole>(entity =>
+        {
+            entity.Property(e => e.Id)
+                .HasColumnType("nvarchar(450)")
+                .HasMaxLength(450);
+        });
 
         /* ******************************************
          * Categoria
