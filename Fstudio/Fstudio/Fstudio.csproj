@@ -1,17 +1,67 @@
+<!--
+  ============================================================================
+  Fstudio.csproj
+  Ficheiro de configuração do projeto .NET
+  Define o SDK, framework alvo e dependências (pacotes NuGet)
+  ============================================================================
+-->
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
+  <!--
+    PropertyGroup: Configurações gerais do projeto
+  -->
   <PropertyGroup>
+    <!-- Framework alvo: .NET 10.0 -->
     <TargetFramework>net10.0</TargetFramework>
+
+    <!-- Ativar verificação de tipos nullable (evita NullReferenceException) -->
     <Nullable>enable</Nullable>
+
+    <!-- Ativar usings implícitos (não precisa de declarar System, etc.) -->
     <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- ID para User Secrets (armazenar configurações sensíveis em desenvolvimento) -->
     <UserSecretsId>aspnet-Fstudio-7d1dfc63-4f39-44ce-abff-559d0c5efa25</UserSecretsId>
   </PropertyGroup>
 
+  <!--
+    ItemGroup: Referências a pacotes NuGet
+    Estas são as dependências externas do projeto
+  -->
   <ItemGroup>
+    <!--
+      Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
+      Fornece páginas de diagnóstico para erros de Entity Framework
+      Útil em desenvolvimento para ver erros de migrações
+    -->
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.5" />
+
+    <!--
+      Microsoft.AspNetCore.Identity.EntityFrameworkCore
+      Integração do ASP.NET Core Identity com Entity Framework Core
+      Permite armazenar utilizadores, roles, claims na base de dados
+    -->
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.5" />
+
+    <!--
+      Microsoft.AspNetCore.Identity.UI
+      Páginas Razor pré-construídas para Login, Register, Forgot Password, etc.
+      Podem ser personalizadas através de scaffolding
+    -->
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.5" />
+
+    <!--
+      Microsoft.EntityFrameworkCore.Sqlite
+      Provider SQLite para Entity Framework Core
+      Permite usar ficheiro SQLite como base de dados (fstudio.db)
+    -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.5" />
+
+    <!--
+      Microsoft.EntityFrameworkCore.Tools
+      Ferramentas CLI para Entity Framework Core
+      Comandos: dotnet ef migrations add, dotnet ef database update
+    -->
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.5" />
   </ItemGroup>
 
