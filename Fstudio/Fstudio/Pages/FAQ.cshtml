@@ -1,0 +1,171 @@
+@page
+@model FAQModel
+@{
+    ViewData["Title"] = "FAQ";
+}
+
+<div class="page-header">
+    <p class="section-subtitle">FAQ</p>
+    <h1>Perguntas Frequentes</h1>
+    <div class="ornament">
+        <i class="bi bi-question-circle"></i>
+    </div>
+</div>
+
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item border-0 mb-3 animate-on-scroll animate-delay-1" style="background: var(--bg-cream);">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" style="background: var(--bg-cream); font-family: 'Cormorant Garamond', serif; font-size: 1.2rem;"
+                                    data-bs-toggle="collapse" data-bs-target="#faq1">
+                                Quanto tempo antes devo reservar?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted" style="line-height: 1.9;">
+                                Recomendo que reserve com pelo menos 6 a 12 meses de antecedência, especialmente
+                                para datas populares como fins de semana de verão. No entanto, se o seu casamento
+                                for em breve, não hesite em contactar-me — farei o possível para ajudar.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border-0 mb-3 animate-on-scroll animate-delay-2" style="background: var(--bg-cream);">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" style="background: var(--bg-cream); font-family: 'Cormorant Garamond', serif; font-size: 1.2rem;"
+                                    data-bs-toggle="collapse" data-bs-target="#faq2">
+                                Quanto tempo demora a receber as fotografias?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted" style="line-height: 1.9;">
+                                O prazo de entrega varia entre 4 a 8 semanas após o casamento. Durante este período,
+                                seleciono e edito cuidadosamente cada fotografia para garantir a melhor qualidade.
+                                Se precisar de algumas fotos mais rapidamente, posso fornecer uma seleção prévia.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border-0 mb-3 animate-on-scroll animate-delay-3" style="background: var(--bg-cream);">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" style="background: var(--bg-cream); font-family: 'Cormorant Garamond', serif; font-size: 1.2rem;"
+                                    data-bs-toggle="collapse" data-bs-target="#faq3">
+                                Quantas fotografias irei receber?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted" style="line-height: 1.9;">
+                                O número de fotografias varia conforme a duração da cobertura e os momentos do dia.
+                                Em média, entrego entre 400 a 800 fotografias para uma cobertura completa de 8-10 horas.
+                                Todas as imagens são cuidadosamente editadas e entregues em alta resolução.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border-0 mb-3 animate-on-scroll animate-delay-4" style="background: var(--bg-cream);">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" style="background: var(--bg-cream); font-family: 'Cormorant Garamond', serif; font-size: 1.2rem;"
+                                    data-bs-toggle="collapse" data-bs-target="#faq4">
+                                Desloca-se para fora de Lisboa?
+                            </button>
+                        </h2>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted" style="line-height: 1.9;">
+                                Sim! Fotografo casamentos em todo o país e também no estrangeiro. Para destinos
+                                fora de Lisboa, aplica-se um suplemento para despesas de deslocação. Entre em
+                                contacto para um orçamento personalizado.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border-0 mb-3 animate-on-scroll animate-delay-5" style="background: var(--bg-cream);">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" style="background: var(--bg-cream); font-family: 'Cormorant Garamond', serif; font-size: 1.2rem;"
+                                    data-bs-toggle="collapse" data-bs-target="#faq5">
+                                Posso escolher as fotografias a editar?
+                            </button>
+                        </h2>
+                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted" style="line-height: 1.9;">
+                                Todas as fotografias incluídas no pacote são selecionadas e editadas por mim.
+                                Se houver momentos ou pessoas específicas que deseja garantir que estão incluídas,
+                                basta indicar antes do casamento. Confie na minha experiência para capturar
+                                todos os momentos importantes.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border-0 mb-3 animate-on-scroll animate-delay-6" style="background: var(--bg-cream);">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" style="background: var(--bg-cream); font-family: 'Cormorant Garamond', serif; font-size: 1.2rem;"
+                                    data-bs-toggle="collapse" data-bs-target="#faq6">
+                                Qual é a forma de pagamento?
+                            </button>
+                        </h2>
+                        <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted" style="line-height: 1.9;">
+                                O pagamento é dividido em duas partes: 30% no momento da reserva para garantir
+                                a data, e os restantes 70% até uma semana antes do casamento. Aceito transferência
+                                bancária, MBWay e PayPal.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border-0 mb-3 animate-on-scroll" style="background: var(--bg-cream);">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" style="background: var(--bg-cream); font-family: 'Cormorant Garamond', serif; font-size: 1.2rem;"
+                                    data-bs-toggle="collapse" data-bs-target="#faq7">
+                                E se chover no dia do casamento?
+                            </button>
+                        </h2>
+                        <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted" style="line-height: 1.9;">
+                                A chuva pode criar fotografias incrivelmente românticas e únicas! Tenho experiência
+                                em adaptar-me a todas as condições meteorológicas e encontrar os melhores cenários,
+                                quer seja ao ar livre com guarda-chuvas elegantes, quer em espaços interiores com
+                                luz natural ou artificial bem trabalhada.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- More Questions CTA -->
+<section class="section section-cream text-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 animate-on-scroll">
+                <p class="section-subtitle">Mais Questões?</p>
+                <h3 style="font-family: 'Cormorant Garamond', serif;">Estou Aqui Para Ajudar</h3>
+                <p class="text-muted my-4">
+                    Se não encontrou a resposta que procurava, não hesite em contactar-me.
+                    Respondo a todas as mensagens em menos de 24 horas.
+                </p>
+                <a asp-page="/Contacto" class="btn btn-artistic">Contactar</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Styles {
+    <style>
+        .accordion-button:not(.collapsed) {
+            background: var(--bg-cream) !important;
+            color: var(--text-dark);
+            box-shadow: none;
+        }
+        .accordion-button::after {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23c4a35a'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+        }
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: var(--accent);
+        }
+    </style>
+}

@@ -45,6 +45,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     // Configurações de Sign In
     options.SignIn.RequireConfirmedAccount = false;  // Não exigir confirmação de email
+    options.SignIn.RequireConfirmedEmail = false;     // Não exigir email confirmado
 
     // Configurações de Password (requisitos de segurança)
     options.Password.RequireDigit = true;            // Exigir pelo menos 1 número
@@ -113,12 +114,6 @@ builder.Services.AddAuthorization(options =>
 // ============================================================================
 // CONSTRUÇÃO DA APLICAÇÃO
 // ============================================================================
-
-
-/* ******************************************
- * Construção da aplicação
- * ****************************************** */
-
 var app = builder.Build();
 
 // ============================================================================

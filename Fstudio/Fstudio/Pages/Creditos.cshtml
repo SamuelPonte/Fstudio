@@ -1,0 +1,145 @@
+@page
+@model CreditosModel
+@{
+    ViewData["Title"] = "Créditos";
+}
+
+<div class="page-header">
+    <p class="section-subtitle">Créditos</p>
+    <h1>Reconhecimentos</h1>
+    <div class="ornament">
+        <i class="bi bi-award"></i>
+    </div>
+</div>
+
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Technologies -->
+                <div class="card border-0 shadow-sm p-4 p-md-5 mb-4 animate-on-scroll" style="background: var(--bg-cream);">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-code-slash" style="font-size: 2.5rem; color: var(--accent);"></i>
+                        <h3 class="mt-3" style="font-family: 'Cormorant Garamond', serif;">Tecnologias Utilizadas</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-3 d-flex align-items-center">
+                                    <i class="bi bi-check-circle-fill me-3" style="color: var(--accent);"></i>
+                                    <span class="text-muted">ASP.NET Core 10.0</span>
+                                </li>
+                                <li class="mb-3 d-flex align-items-center">
+                                    <i class="bi bi-check-circle-fill me-3" style="color: var(--accent);"></i>
+                                    <span class="text-muted">Entity Framework Core</span>
+                                </li>
+                                <li class="mb-3 d-flex align-items-center">
+                                    <i class="bi bi-check-circle-fill me-3" style="color: var(--accent);"></i>
+                                    <span class="text-muted">SignalR</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-3 d-flex align-items-center">
+                                    <i class="bi bi-check-circle-fill me-3" style="color: var(--accent);"></i>
+                                    <span class="text-muted">Bootstrap 5</span>
+                                </li>
+                                <li class="mb-3 d-flex align-items-center">
+                                    <i class="bi bi-check-circle-fill me-3" style="color: var(--accent);"></i>
+                                    <span class="text-muted">Bootstrap Icons</span>
+                                </li>
+                                <li class="mb-3 d-flex align-items-center">
+                                    <i class="bi bi-check-circle-fill me-3" style="color: var(--accent);"></i>
+                                    <span class="text-muted">SQLite</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fonts -->
+                <div class="card border-0 shadow-sm p-4 p-md-5 mb-4 animate-on-scroll animate-delay-1" style="background: var(--bg-cream);">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-fonts" style="font-size: 2.5rem; color: var(--accent);"></i>
+                        <h3 class="mt-3" style="font-family: 'Cormorant Garamond', serif;">Tipografia</h3>
+                    </div>
+                    <ul class="list-unstyled text-center">
+                        <li class="mb-3">
+                            <span class="script-font" style="font-size: 2rem;">Great Vibes</span>
+                            <p class="text-muted small mb-0">Títulos decorativos</p>
+                        </li>
+                        <li class="mb-3">
+                            <span style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem;">Cormorant Garamond</span>
+                            <p class="text-muted small mb-0">Títulos e subtítulos</p>
+                        </li>
+                        <li>
+                            <span style="font-family: 'Montserrat', sans-serif; font-size: 1rem;">Montserrat</span>
+                            <p class="text-muted small mb-0">Corpo de texto</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Images -->
+                <div class="card border-0 shadow-sm p-4 p-md-5 mb-4 animate-on-scroll animate-delay-2" style="background: var(--bg-cream);">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-image" style="font-size: 2.5rem; color: var(--accent);"></i>
+                        <h3 class="mt-3" style="font-family: 'Cormorant Garamond', serif;">Imagens</h3>
+                    </div>
+                    <p class="text-muted text-center mb-0">
+                        As fotografias apresentadas neste website são para fins demonstrativos e foram obtidas através do
+                        <a href="https://unsplash.com" target="_blank" rel="noopener" style="color: var(--accent);">Unsplash</a>,
+                        uma plataforma de fotografias gratuitas de alta qualidade. Agradecemos a todos os fotógrafos
+                        que partilham o seu trabalho.
+                    </p>
+                </div>
+
+                <!-- Development -->
+                <div class="card border-0 shadow-sm p-4 p-md-5 mb-4 animate-on-scroll animate-delay-3" style="background: var(--bg-cream);">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-mortarboard" style="font-size: 2.5rem; color: var(--accent);"></i>
+                        <h3 class="mt-3" style="font-family: 'Cormorant Garamond', serif;">Desenvolvido Por</h3>
+                    </div>
+                    <p class="text-muted text-center">
+                        Este website foi desenvolvido como projeto académico, demonstrando capacidades de
+                        desenvolvimento web full-stack com ASP.NET Core, incluindo autenticação, autorização,
+                        API REST e comunicação em tempo real com SignalR.
+                    </p>
+                    <div class="text-center mt-4">
+                        <div class="d-inline-flex align-items-center gap-3">
+                            <span style="font-family: 'Cormorant Garamond', serif; font-size: 1.3rem;">Ano Letivo 2024/2025</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Copyright -->
+                <div class="card border-0 shadow-sm p-4 p-md-5 animate-on-scroll animate-delay-4" style="background: var(--bg-cream);">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-c-circle" style="font-size: 2.5rem; color: var(--accent);"></i>
+                        <h3 class="mt-3" style="font-family: 'Cormorant Garamond', serif;">Direitos de Autor</h3>
+                    </div>
+                    <p class="text-muted text-center mb-0">
+                        &copy; @DateTime.Now.Year Fstudio Wedding Photography. Todos os direitos reservados.
+                        Este é um projeto académico fictício. Qualquer semelhança com empresas ou pessoas reais
+                        é mera coincidência.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Back to Home -->
+<section class="section section-cream text-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 animate-on-scroll">
+                <p class="section-subtitle">Obrigado</p>
+                <h3 style="font-family: 'Cormorant Garamond', serif;">Por Visitar</h3>
+                <div class="mt-4">
+                    <a asp-page="/Index" class="btn btn-artistic">Voltar ao Início</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

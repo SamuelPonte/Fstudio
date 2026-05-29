@@ -1,0 +1,71 @@
+@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Entrar";
+}
+
+<div class="page-header">
+    <p class="section-subtitle">Área Privada</p>
+    <h1>Entrar</h1>
+    <div class="ornament">
+        <i class="bi bi-key"></i>
+    </div>
+</div>
+
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card border-0 shadow-sm p-4 p-md-5 animate-on-scroll" style="background: var(--bg-cream);">
+                    <form id="account" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-4">
+                            <label asp-for="Input.Email" class="form-label" style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem;">Email</label>
+                            <input asp-for="Input.Email" class="form-control form-control-lg border-0 border-bottom rounded-0" style="background: transparent;" placeholder="email@exemplo.com" autocomplete="username" />
+                            <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Input.Password" class="form-label" style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem;">Password</label>
+                            <input asp-for="Input.Password" class="form-control form-control-lg border-0 border-bottom rounded-0" style="background: transparent;" placeholder="••••••••" autocomplete="current-password" />
+                            <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input asp-for="Input.RememberMe" class="form-check-input" style="border-color: var(--accent);" />
+                                <label asp-for="Input.RememberMe" class="form-check-label text-muted">
+                                    Lembrar-me
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-5">
+                            <button id="login-submit" type="submit" class="btn btn-artistic px-5 py-3 w-100">
+                                Entrar
+                            </button>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <p class="text-muted small">
+                                <a asp-page="./ForgotPassword" style="color: var(--accent);">Esqueceu a password?</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="text-center mt-4 animate-on-scroll animate-delay-2">
+                    <p class="text-muted">
+                        Ainda não tem conta?
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" style="color: var(--accent); font-weight: 500;">Registar</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

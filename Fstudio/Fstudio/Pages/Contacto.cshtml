@@ -1,0 +1,147 @@
+@page
+@model ContactoModel
+@{
+    ViewData["Title"] = "Contacto";
+}
+
+<div class="page-header">
+    <p class="section-subtitle">Contacto</p>
+    <h1>Vamos Criar Magia Juntos</h1>
+    <div class="ornament">
+        <i class="bi bi-envelope-heart"></i>
+    </div>
+</div>
+
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 animate-on-scroll">
+                @if (TempData["Sucesso"] != null)
+                {
+                    <div class="alert alert-success text-center mb-4" style="background: rgba(196, 163, 90, 0.1); border-color: var(--accent); color: var(--text-dark);">
+                        <i class="bi bi-check-circle me-2" style="color: var(--accent);"></i>
+                        @TempData["Sucesso"]
+                    </div>
+                }
+
+                <div class="card border-0 shadow-sm p-4 p-md-5" style="background: var(--bg-cream);">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Contacto.Nome" class="form-label" style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem;">Nome *</label>
+                                <input asp-for="Contacto.Nome" class="form-control form-control-lg border-0 border-bottom rounded-0" style="background: transparent;" placeholder="O vosso nome" />
+                                <span asp-validation-for="Contacto.Nome" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Contacto.Email" class="form-label" style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem;">Email *</label>
+                                <input asp-for="Contacto.Email" type="email" class="form-control form-control-lg border-0 border-bottom rounded-0" style="background: transparent;" placeholder="email@exemplo.com" />
+                                <span asp-validation-for="Contacto.Email" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Contacto.Telefone" class="form-label" style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem;">Telefone</label>
+                                <input asp-for="Contacto.Telefone" class="form-control form-control-lg border-0 border-bottom rounded-0" style="background: transparent;" placeholder="+351 912 345 678" />
+                                <span asp-validation-for="Contacto.Telefone" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Contacto.DataEvento" class="form-label" style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem;">Data do Evento</label>
+                                <input asp-for="Contacto.DataEvento" type="date" class="form-control form-control-lg border-0 border-bottom rounded-0" style="background: transparent;" />
+                                <span asp-validation-for="Contacto.DataEvento" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Contacto.TipoServico" class="form-label" style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem;">Tipo de Serviço</label>
+                            <select asp-for="Contacto.TipoServico" class="form-select form-select-lg border-0 border-bottom rounded-0" style="background: transparent;">
+                                <option value="">Selecione uma opção</option>
+                                <option value="Casamento">Casamento</option>
+                                <option value="Pré-Casamento">Pré-Casamento</option>
+                                <option value="Noivado">Noivado</option>
+                                <option value="Trash the Dress">Trash the Dress</option>
+                                <option value="Filme">Filme de Casamento</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                            <span asp-validation-for="Contacto.TipoServico" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Contacto.Mensagem" class="form-label" style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem;">A Vossa História *</label>
+                            <textarea asp-for="Contacto.Mensagem" class="form-control border-0 border-bottom rounded-0" style="background: transparent;" rows="5"
+                                      placeholder="Contem-nos como se conheceram, como foi o pedido, onde será o casamento... Queremos conhecer a vossa história!"></textarea>
+                            <span asp-validation-for="Contacto.Mensagem" class="text-danger small"></span>
+                        </div>
+
+                        <div class="text-center mt-5">
+                            <button type="submit" class="btn btn-artistic px-5 py-3">
+                                <i class="bi bi-send me-2"></i>Enviar Mensagem
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Info -->
+<section class="section section-cream">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-md-4 mb-4 animate-on-scroll animate-delay-1">
+                <div class="p-4">
+                    <i class="bi bi-envelope" style="font-size: 2.5rem; color: var(--accent);"></i>
+                    <h5 class="mt-3" style="font-family: 'Cormorant Garamond', serif;">Email</h5>
+                    <p class="text-muted">info@fstudio.info</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 animate-on-scroll animate-delay-2">
+                <div class="p-4">
+                    <i class="bi bi-phone" style="font-size: 2.5rem; color: var(--accent);"></i>
+                    <h5 class="mt-3" style="font-family: 'Cormorant Garamond', serif;">Telefone</h5>
+                    <p class="text-muted">+351 912 345 678</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 animate-on-scroll animate-delay-3">
+                <div class="p-4">
+                    <i class="bi bi-geo-alt" style="font-size: 2.5rem; color: var(--accent);"></i>
+                    <h5 class="mt-3" style="font-family: 'Cormorant Garamond', serif;">Localização</h5>
+                    <p class="text-muted">Lisboa, Portugal</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Social Links -->
+<section class="section text-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 animate-on-scroll">
+                <p class="section-subtitle">Redes Sociais</p>
+                <h3 style="font-family: 'Cormorant Garamond', serif;">Sigam-nos</h3>
+                <div class="d-flex justify-content-center gap-4 mt-4">
+                    <a href="#" class="text-decoration-none" style="color: var(--text-dark); font-size: 2rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-dark)'">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="#" class="text-decoration-none" style="color: var(--text-dark); font-size: 2rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-dark)'">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" class="text-decoration-none" style="color: var(--text-dark); font-size: 2rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-dark)'">
+                        <i class="bi bi-pinterest"></i>
+                    </a>
+                    <a href="#" class="text-decoration-none" style="color: var(--text-dark); font-size: 2rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-dark)'">
+                        <i class="bi bi-youtube"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

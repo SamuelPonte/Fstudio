@@ -1,10 +1,245 @@
-﻿@page
+@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Início";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="hero">
+    <div class="hero-content">
+        <h1>Fstudio</h1>
+        <p>Wedding Photography</p>
+        <div class="ornament">
+            <i class="bi bi-heart-fill"></i>
+        </div>
+        <a asp-page="/Portfolio/Index" class="btn btn-artistic mt-3">Descobrir Portfólio</a>
+    </div>
+</section>
+
+<!-- Featured Work -->
+<section class="section">
+    <div class="container">
+        <div class="text-center animate-on-scroll">
+            <p class="section-subtitle">Portfolio</p>
+            <h2 class="section-title">Trabalhos em Destaque</h2>
+            <div class="ornament">
+                <i class="bi bi-camera"></i>
+            </div>
+        </div>
+
+        <div class="portfolio-grid mt-5">
+            @{
+                var sampleImages = new[] {
+                    ("https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800", "Ana & João", "Casamento"),
+                    ("https://images.unsplash.com/photo-1519741497674-611481863552?w=800", "Sofia & Pedro", "Casamento"),
+                    ("https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=800", "Maria & Tiago", "Pré-Casamento"),
+                    ("https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=800", "Inês & Miguel", "Casamento"),
+                    ("https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800", "Rita & André", "Noivado"),
+                    ("https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800", "Carolina & Luís", "Casamento")
+                };
+            }
+            @for (int i = 0; i < sampleImages.Length; i++)
+            {
+                <div class="portfolio-item animate-on-scroll animate-delay-@(i % 6 + 1)">
+                    <img src="@sampleImages[i].Item1" alt="@sampleImages[i].Item2" loading="lazy" />
+                    <div class="overlay">
+                        <h5>@sampleImages[i].Item2</h5>
+                        <span>@sampleImages[i].Item3</span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="text-center mt-5 animate-on-scroll">
+            <a asp-page="/Portfolio/Index" class="btn btn-artistic">Ver Todo o Portfólio</a>
+        </div>
+    </div>
+</section>
+
+<!-- About Preview -->
+<section class="section section-cream">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0 animate-on-scroll">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=800" alt="Fotógrafo" />
+                </div>
+            </div>
+            <div class="col-lg-6 ps-lg-5">
+                <div class="animate-on-scroll animate-delay-2">
+                    <p class="section-subtitle text-start">Sobre Mim</p>
+                    <h2 class="section-title text-start" style="font-size: 2.5rem;">Capturando Momentos<br>que Duram para Sempre</h2>
+                </div>
+                <p class="text-muted my-4 animate-on-scroll animate-delay-3" style="line-height: 1.9;">
+                    Sou fotógrafo de casamentos apaixonado por contar histórias de amor através da minha lente.
+                    Cada casal é único, e dedico-me a capturar a essência do vosso dia especial com um olhar
+                    artístico e atemporal. Acredito que as melhores fotografias nascem de momentos genuínos
+                    e emoções verdadeiras.
+                </p>
+                <div class="animate-on-scroll animate-delay-4">
+                    <a asp-page="/Sobre" class="btn btn-artistic">Conhecer Mais</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services -->
+<section class="section">
+    <div class="container">
+        <div class="text-center animate-on-scroll">
+            <p class="section-subtitle">Serviços</p>
+            <h2 class="section-title">O Que Oferecemos</h2>
+            <div class="ornament">
+                <i class="bi bi-stars"></i>
+            </div>
+        </div>
+
+        <div class="row mt-5 justify-content-center">
+            <div class="col-md-4 mb-4 animate-on-scroll animate-delay-1">
+                <div class="text-center p-4">
+                    <div class="mb-4">
+                        <i class="bi bi-camera" style="font-size: 3rem; color: var(--accent);"></i>
+                    </div>
+                    <h4 style="font-family: 'Cormorant Garamond', serif; font-weight: 400;">Casamentos</h4>
+                    <p class="text-muted small">Cobertura completa do vosso dia especial, desde os preparativos até à festa.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 animate-on-scroll animate-delay-2">
+                <div class="text-center p-4">
+                    <i class="bi bi-heart" style="font-size: 3rem; color: var(--accent);"></i>
+                    <h4 class="mt-4" style="font-family: 'Cormorant Garamond', serif; font-weight: 400;">Pré-Casamento</h4>
+                    <p class="text-muted small">Sessões fotográficas românticas para conhecer-vos antes do grande dia.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 animate-on-scroll animate-delay-3">
+                <div class="text-center p-4">
+                    <i class="bi bi-film" style="font-size: 3rem; color: var(--accent);"></i>
+                    <h4 class="mt-4" style="font-family: 'Cormorant Garamond', serif; font-weight: 400;">Filmes</h4>
+                    <p class="text-muted small">Vídeos cinematográficos que contam a vossa história em movimento.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Parallax Quote -->
+<section class="parallax-section py-5" style="background-image: linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url('https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=1920');">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center animate-on-scroll">
+                <p class="section-subtitle" style="font-size: 2.5rem;">Um momento, uma memória</p>
+                <p class="text-muted mt-3" style="font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 1.3rem;">
+                    "Fotografar um casamento é contar uma história de amor em imagens. É capturar olhares,
+                    sorrisos e lágrimas de alegria que ficarão para sempre na vossa memória."
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="section section-cream">
+    <div class="container">
+        <div class="text-center animate-on-scroll">
+            <p class="section-subtitle">Testemunhos</p>
+            <h2 class="section-title">O Que Dizem os Nossos Casais</h2>
+            <div class="ornament">
+                <i class="bi bi-chat-quote"></i>
+            </div>
+        </div>
+
+        <div class="row mt-5 justify-content-center">
+            <div class="col-lg-4 col-md-6 mb-4 animate-on-scroll animate-delay-1">
+                <div class="testimonial-card h-100">
+                    <div class="stars">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                    <p class="quote">"Superou todas as nossas expectativas. As fotografias são verdadeiras obras de arte que guardaremos para sempre."</p>
+                    <p class="author">Ana & João</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4 animate-on-scroll animate-delay-2">
+                <div class="testimonial-card h-100">
+                    <div class="stars">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                    <p class="quote">"Profissionalismo e sensibilidade únicos. Capturou momentos que nem sabíamos que tinham acontecido."</p>
+                    <p class="author">Sofia & Pedro</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4 animate-on-scroll animate-delay-3">
+                <div class="testimonial-card h-100">
+                    <div class="stars">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                    <p class="quote">"Cada foto conta uma história. Revivemos o nosso dia sempre que as vemos. Simplesmente perfeito!"</p>
+                    <p class="author">Maria & Tiago</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="section text-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 animate-on-scroll">
+                <p class="section-subtitle" style="font-size: 2rem;">Vamos criar magia juntos?</p>
+                <h2 class="section-title">Conte-nos a Vossa História</h2>
+                <p class="text-muted my-4">
+                    Cada casamento é único e merece ser contado de forma especial.
+                    Entre em contacto para discutirmos como posso fazer parte do vosso dia.
+                </p>
+                <a asp-page="/Contacto" class="btn btn-artistic">Entrar em Contacto</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Instagram Feed Preview -->
+<section class="section section-cream">
+    <div class="container">
+        <div class="text-center animate-on-scroll">
+            <p class="section-subtitle">Instagram</p>
+            <h2 class="section-title">@@fstudio.weddings</h2>
+        </div>
+
+        <div class="row g-2 mt-4">
+            @{
+                var instaImages = new[] {
+                    "https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=400",
+                    "https://images.unsplash.com/photo-1460978812857-470ed1c77af0?w=400",
+                    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+                    "https://images.unsplash.com/photo-1529636798458-92182e662485?w=400",
+                    "https://images.unsplash.com/photo-1544078751-58fee2d8a03b?w=400",
+                    "https://images.unsplash.com/photo-1525772764200-be829a350797?w=400"
+                };
+            }
+            @for (int i = 0; i < instaImages.Length; i++)
+            {
+                <div class="col-6 col-md-4 col-lg-2 animate-on-scroll animate-delay-@(i % 6 + 1)">
+                    <a href="#" class="d-block position-relative" style="aspect-ratio: 1;">
+                        <img src="@instaImages[i]" alt="Instagram" class="w-100 h-100" style="object-fit: cover;" />
+                    </a>
+                </div>
+            }
+        </div>
+
+        <div class="text-center mt-4 animate-on-scroll">
+            <a href="#" class="btn btn-artistic">Seguir no Instagram</a>
+        </div>
+    </div>
+</section>

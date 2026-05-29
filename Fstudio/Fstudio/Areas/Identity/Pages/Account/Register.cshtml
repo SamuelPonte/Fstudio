@@ -1,0 +1,68 @@
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Registar";
+}
+
+<div class="page-header">
+    <p class="section-subtitle">Criar Conta</p>
+    <h1>Registar</h1>
+    <div class="ornament">
+        <i class="bi bi-person-plus"></i>
+    </div>
+</div>
+
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card border-0 shadow-sm p-4 p-md-5 animate-on-scroll" style="background: var(--bg-cream);">
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-4">
+                            <label asp-for="Input.NomeCompleto" class="form-label" style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem;">Nome Completo</label>
+                            <input asp-for="Input.NomeCompleto" class="form-control form-control-lg border-0 border-bottom rounded-0" style="background: transparent;" placeholder="O seu nome" autocomplete="name" />
+                            <span asp-validation-for="Input.NomeCompleto" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Input.Email" class="form-label" style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem;">Email</label>
+                            <input asp-for="Input.Email" class="form-control form-control-lg border-0 border-bottom rounded-0" style="background: transparent;" placeholder="email@exemplo.com" autocomplete="username" />
+                            <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Input.Password" class="form-label" style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem;">Password</label>
+                            <input asp-for="Input.Password" class="form-control form-control-lg border-0 border-bottom rounded-0" style="background: transparent;" placeholder="••••••••" autocomplete="new-password" />
+                            <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Input.ConfirmPassword" class="form-label" style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem;">Confirmar Password</label>
+                            <input asp-for="Input.ConfirmPassword" class="form-control form-control-lg border-0 border-bottom rounded-0" style="background: transparent;" placeholder="••••••••" autocomplete="new-password" />
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger small"></span>
+                        </div>
+
+                        <div class="text-center mt-5">
+                            <button id="registerSubmit" type="submit" class="btn btn-artistic px-5 py-3 w-100">
+                                Criar Conta
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="text-center mt-4 animate-on-scroll animate-delay-2">
+                    <p class="text-muted">
+                        Já tem conta?
+                        <a asp-page="./Login" style="color: var(--accent); font-weight: 500;">Entrar</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
