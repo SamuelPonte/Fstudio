@@ -1,0 +1,28 @@
+@page
+@model LogoutModel
+@{
+    ViewData["Title"] = "Sessão Terminada";
+}
+
+<div class="page-header">
+    <p class="section-subtitle">Até Breve</p>
+    <h1>Sessão Terminada</h1>
+    <div class="ornament">
+        <i class="bi bi-box-arrow-right"></i>
+    </div>
+</div>
+
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center animate-on-scroll">
+                <p class="text-muted mb-4" style="font-size: 1.2rem;">
+                    A sua sessão foi terminada com sucesso.
+                </p>
+                <a asp-page="/Index" asp-area="" class="btn btn-artistic">
+                    Voltar ao Início
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

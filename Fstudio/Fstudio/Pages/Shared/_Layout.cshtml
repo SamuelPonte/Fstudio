@@ -1,53 +1,597 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="pt">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Fstudio</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Fstudio.styles.css" asp-append-version="true" />
+    <title>@ViewData["Title"] - Fstudio Wedding Photography</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-light: #fefefe;
+            --bg-cream: #faf8f5;
+            --text-dark: #2c2c2c;
+            --text-muted: #6b6b6b;
+            --accent: #c4a35a;
+            --accent-dark: #a08642;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Artistic Headings */
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+        }
+
+        .script-font {
+            font-family: 'Great Vibes', cursive;
+        }
+
+        /* Navbar */
+        .navbar-artistic {
+            background: transparent;
+            position: absolute;
+            width: 100%;
+            z-index: 1000;
+            padding: 2rem 0;
+            transition: all 0.4s ease;
+        }
+
+        .navbar-artistic.scrolled {
+            background: rgba(255,255,255,0.98);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            padding: 1rem 0;
+            position: fixed;
+        }
+
+        .navbar-artistic .navbar-brand {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            transition: all 0.3s;
+        }
+
+        .navbar-artistic .nav-link {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-dark);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 0.5rem 1.2rem;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .navbar-artistic .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+
+        .navbar-artistic .nav-link:hover::after {
+            width: 80%;
+        }
+
+        .navbar-artistic .nav-link:hover {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
+                        url('https://images.unsplash.com/photo-1519741497674-611481863552?w=1920') center/cover no-repeat;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.6) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 6rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .hero-content p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.3s forwards;
+        }
+
+        .hero-content .btn-artistic {
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.6s forwards;
+        }
+
+        /* Sections */
+        .section {
+            padding: 8rem 0;
+            position: relative;
+        }
+
+        .section-cream {
+            background: var(--bg-cream);
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        /* Artistic Button */
+        .btn-artistic {
+            background: transparent;
+            border: 1px solid var(--text-dark);
+            color: var(--text-dark);
+            padding: 1rem 2.5rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-artistic::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .btn-artistic:hover {
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .btn-artistic:hover::before {
+            left: 0;
+        }
+
+        /* Portfolio Grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        @@media (max-width: 992px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4/5;
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .portfolio-item .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.9);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .portfolio-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .portfolio-item .overlay h5 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .portfolio-item .overlay span {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.3rem;
+            color: var(--accent);
+        }
+
+        /* Scroll Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .animate-delay-1 { transition-delay: 0.1s; }
+        .animate-delay-2 { transition-delay: 0.2s; }
+        .animate-delay-3 { transition-delay: 0.3s; }
+        .animate-delay-4 { transition-delay: 0.4s; }
+        .animate-delay-5 { transition-delay: 0.5s; }
+        .animate-delay-6 { transition-delay: 0.6s; }
+
+        /* Fade animations */
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @@keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Testimonials */
+        .testimonial-card {
+            background: #fff;
+            padding: 3rem;
+            text-align: center;
+            border: none;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+        }
+
+        .testimonial-card .quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-card .author {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .stars {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        /* About Section */
+        .about-image {
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+        }
+
+        .about-image::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: -20px;
+            bottom: -20px;
+            border: 1px solid var(--accent);
+            z-index: -1;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-cream);
+            padding: 4rem 0;
+            margin-top: auto;
+        }
+
+        .footer-brand {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.5rem;
+            color: var(--text-dark);
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin: 0 1rem;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .social-links a {
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            margin: 0 0.75rem;
+            transition: color 0.3s, transform 0.3s;
+            display: inline-block;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        /* Page Header */
+        .page-header {
+            padding-top: 150px;
+            padding-bottom: 4rem;
+            text-align: center;
+            background: var(--bg-cream);
+        }
+
+        .page-header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4rem;
+        }
+
+        /* Form Styling */
+        .form-control, .form-select {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            color: var(--text-dark);
+            padding: 1rem 1.25rem;
+            font-family: 'Montserrat', sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(196, 163, 90, 0.1);
+        }
+
+        .form-label {
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* Card styling */
+        .card-elegant {
+            background: #fff;
+            border: none;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.05);
+        }
+
+        .text-accent {
+            color: var(--accent) !important;
+        }
+
+        /* Decorative elements */
+        .ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .ornament::before,
+        .ornament::after {
+            content: '';
+            width: 60px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .ornament i {
+            color: var(--accent);
+            font-size: 0.8rem;
+        }
+
+        /* Parallax effect */
+        .parallax-section {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+    @RenderSection("Styles", required: false)
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Fstudio</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
+    <nav class="navbar navbar-expand-lg navbar-artistic" id="mainNav">
         <div class="container">
-            &copy; 2026 - Fstudio - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            <a class="navbar-brand" asp-area="" asp-page="/Index">Fstudio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-page="/Index">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-page="/Portfolio/Index">Portfólio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-page="/Filmes">Filmes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-page="/Sobre">Sobre</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-page="/Contacto">Contacto</a>
+                    </li>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-accent" asp-area="Admin" asp-page="/Index">Admin</a>
+                            </li>
+                        }
+                        else if (User.IsInRole("Cliente"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-accent" asp-area="Cliente" asp-page="/Index">Minha Galeria</a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <form asp-area="Identity" asp-page="/Account/Logout" method="post">
+                                <button type="submit" class="nav-link btn btn-link">Sair</button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Entrar</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer class="footer">
+        <div class="container text-center">
+            <div class="footer-brand mb-3">Fstudio</div>
+            <div class="social-links mb-4">
+                <a href="#"><i class="bi bi-instagram"></i></a>
+                <a href="#"><i class="bi bi-facebook"></i></a>
+                <a href="#"><i class="bi bi-pinterest"></i></a>
+            </div>
+            <div class="footer-links mb-4">
+                <a asp-page="/FAQ">FAQ</a>
+                <a asp-page="/Creditos">Créditos</a>
+                <a asp-page="/Privacy">Privacidade</a>
+            </div>
+            <p class="text-muted small mb-0">&copy; @DateTime.Now.Year Fstudio Wedding Photography. Todos os direitos reservados.</p>
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('mainNav');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
 
-    @await RenderSectionAsync("Scripts", required: false)
+        // Scroll animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

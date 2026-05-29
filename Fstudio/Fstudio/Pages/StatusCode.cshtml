@@ -1,0 +1,37 @@
+@page "{code:int}"
+@model StatusCodeModel
+@{
+    ViewData["Title"] = Model.ErrorCode switch
+    {
+        404 => "Página Não Encontrada",
+        500 => "Erro do Servidor",
+        _ => "Erro"
+    };
+}
+
+<div class="page-header" style="min-height: 60vh; display: flex; flex-direction: column; justify-content: center;">
+    <div class="container text-center">
+        <h1 style="font-size: 8rem; font-weight: 200; color: var(--accent);">@Model.ErrorCode</h1>
+        <h2 class="mb-4">
+            @(Model.ErrorCode switch
+            {
+                404 => "Página Não Encontrada",
+                500 => "Erro do Servidor",
+                403 => "Acesso Negado",
+                _ => "Ocorreu um Erro"
+            })
+        </h2>
+        <p class="text-muted mb-4">
+            @(Model.ErrorCode switch
+            {
+                404 => "A página que procura não existe ou foi movida.",
+                500 => "Algo correu mal. Por favor tente novamente mais tarde.",
+                403 => "Não tem permissão para aceder a este recurso.",
+                _ => "Ocorreu um erro inesperado."
+            })
+        </p>
+        <a asp-page="/Index" class="btn btn-custom">
+            <i class="bi bi-house me-2"></i>Voltar ao Início
+        </a>
+    </div>
+</div>
