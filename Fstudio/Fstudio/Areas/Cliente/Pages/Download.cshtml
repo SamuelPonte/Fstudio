@@ -1,0 +1,26 @@
+@page "{id:int?}"
+@model DownloadModel
+@{
+    ViewData["Title"] = "Download";
+}
+
+<div class="text-center py-5">
+    @if (Model.SinglePhoto)
+    {
+        <i class="bi bi-check-circle text-success" style="font-size: 5rem;"></i>
+        <h2 class="mt-4">Download Iniciado</h2>
+        <p class="text-muted">A sua fotografia está a ser descarregada.</p>
+    }
+    else
+    {
+        <i class="bi bi-download text-accent" style="font-size: 5rem;"></i>
+        <h2 class="mt-4">Preparando Download</h2>
+        <p class="text-muted">
+            @Model.TotalFotos fotografias serão descarregadas.
+        </p>
+    }
+
+    <a asp-page="Index" class="btn btn-artistic mt-4">
+        <i class="bi bi-arrow-left me-2"></i>Voltar à Galeria
+    </a>
+</div>
