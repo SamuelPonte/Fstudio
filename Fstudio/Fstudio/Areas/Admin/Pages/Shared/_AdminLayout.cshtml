@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Fstudio Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <style>
+        :root {
+            --sidebar-width: 250px;
+        }
+        body {
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            width: var(--sidebar-width);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            padding-top: 1rem;
+            z-index: 1000;
+        }
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            padding: 0.75rem 1.5rem;
+            border-left: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+            border-left-color: #0d6efd;
+        }
+        .sidebar .nav-link i {
+            margin-right: 0.75rem;
+            width: 20px;
+        }
+        .sidebar-brand {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+        }
+        .navbar-admin {
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-left: var(--sidebar-width);
+        }
+        .card {
+            border: none;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+        }
+        .card-header {
+            background: #fff;
+            border-bottom: 1px solid #eee;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            border: none;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #16213e, #1a1a2e);
+        }
+        .table th {
+            font-weight: 600;
+            background: #f8f9fa;
+        }
+        .badge-status {
+            font-size: 0.8rem;
+            padding: 0.4em 0.8em;
+        }
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 0.7rem;
+        }
+    </style>
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <i class="bi bi-camera"></i> Fstudio
+        </div>
+        <nav class="nav flex-column">
+            <a class="nav-link" asp-area="Admin" asp-page="/Index">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <a class="nav-link" asp-area="Admin" asp-page="/Fotografias/Index">
+                <i class="bi bi-images"></i> Fotografias
+            </a>
+            <a class="nav-link" asp-area="Admin" asp-page="/Categorias/Index">
+                <i class="bi bi-folder"></i> Categorias
+            </a>
+            <a class="nav-link" asp-area="Admin" asp-page="/Clientes/Index">
+                <i class="bi bi-people"></i> Clientes
+            </a>
+            <a class="nav-link" asp-area="Admin" asp-page="/Contactos/Index">
+                <i class="bi bi-envelope"></i> Contactos
+                <span id="contactos-badge" class="badge bg-danger notification-badge d-none">0</span>
+            </a>
+            <a class="nav-link" asp-area="Admin" asp-page="/Testemunhos/Index">
+                <i class="bi bi-chat-quote"></i> Testemunhos
+            </a>
+            <hr class="text-white-50 mx-3" />
+            <a class="nav-link" asp-area="" asp-page="/Index">
+                <i class="bi bi-globe"></i> Ver Site
+            </a>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Logout">
+                <i class="bi bi-box-arrow-right"></i> Sair
+            </a>
+        </nav>
+    </aside>
+
+    <nav class="navbar navbar-admin navbar-expand-lg sticky-top">
+        <div class="container-fluid">
+            <span class="navbar-text">
+                <i class="bi bi-person-circle me-2"></i>
+                @User.Identity?.Name
+            </span>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        @RenderBody()
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    <script>
+        // SignalR connection for notifications
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/hubs/notificacao")
+            .withAutomaticReconnect()
+            .build();
+
+        connection.on("NovoContacto", function(nome, email, mensagem) {
+            const badge = document.getElementById("contactos-badge");
+            if (badge) {
+                let count = parseInt(badge.textContent) || 0;
+                badge.textContent = count + 1;
+                badge.classList.remove("d-none");
+            }
+
+            // Show toast notification
+            showNotification("Novo Contacto", `${nome} enviou uma mensagem.`);
+        });
+
+        connection.on("ReceberNotificacao", function(titulo, mensagem) {
+            showNotification(titulo, mensagem);
+        });
+
+        connection.start().catch(function(err) {
+            console.error("SignalR connection error:", err.toString());
+        });
+
+        function showNotification(titulo, mensagem) {
+            const toast = document.createElement("div");
+            toast.className = "toast align-items-center text-bg-primary border-0 position-fixed bottom-0 end-0 m-3";
+            toast.setAttribute("role", "alert");
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <strong>${titulo}</strong><br>${mensagem}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+            document.body.appendChild(toast);
+            const bsToast = new bootstrap.Toast(toast, { delay: 5000 });
+            bsToast.show();
+            toast.addEventListener("hidden.bs.toast", () => toast.remove());
+        }
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

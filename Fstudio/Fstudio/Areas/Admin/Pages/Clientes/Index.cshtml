@@ -1,0 +1,68 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-people me-2"></i>Clientes</h2>
+    <a asp-page="Create" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-2"></i>Novo Cliente
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Data Evento</th>
+                    <th>Serviço</th>
+                    <th>Fotografias</th>
+                    <th>Estado</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cliente in Model.Clientes)
+                {
+                    <tr>
+                        <td>@cliente.Nome</td>
+                        <td>@cliente.Email</td>
+                        <td>@cliente.DataEvento?.ToString("dd/MM/yyyy")</td>
+                        <td>@cliente.TipoServico</td>
+                        <td>
+                            <span class="badge bg-secondary">@cliente.ClienteFotografias.Count fotos</span>
+                        </td>
+                        <td>
+                            <span class="badge @(cliente.Estado == "Ativo" ? "bg-success" : "bg-secondary")">
+                                @cliente.Estado
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <a asp-page="Galeria" asp-route-id="@cliente.Id" class="btn btn-sm btn-outline-info"
+                               title="Gerir Galeria">
+                                <i class="bi bi-images"></i>
+                            </a>
+                            <a asp-page="Edit" asp-route-id="@cliente.Id" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a asp-page="Delete" asp-route-id="@cliente.Id" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (!Model.Clientes.Any())
+        {
+            <div class="text-center py-4 text-muted">
+                <i class="bi bi-people fs-1"></i>
+                <p class="mt-2">Nenhum cliente encontrado.</p>
+            </div>
+        }
+    </div>
+</div>

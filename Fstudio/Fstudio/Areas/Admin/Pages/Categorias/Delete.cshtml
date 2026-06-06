@@ -1,0 +1,55 @@
+@page "{id:int}"
+@model DeleteModel
+@{
+    ViewData["Title"] = "Eliminar Categoria";
+}
+
+<div class="mb-4">
+    <a asp-page="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-2"></i>Voltar
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Eliminar Categoria</h5>
+            </div>
+            <div class="card-body">
+                <p>Tem a certeza que deseja eliminar esta categoria?</p>
+
+                <dl class="row mb-4">
+                    <dt class="col-sm-4">Nome</dt>
+                    <dd class="col-sm-8">@Model.Categoria?.Nome</dd>
+
+                    <dt class="col-sm-4">Slug</dt>
+                    <dd class="col-sm-8">@Model.Categoria?.Slug</dd>
+
+                    <dt class="col-sm-4">Fotografias</dt>
+                    <dd class="col-sm-8">@Model.Categoria?.Fotografias.Count</dd>
+                </dl>
+
+                @if (Model.Categoria?.Fotografias.Count > 0)
+                {
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-circle me-2"></i>
+                        Esta categoria contém fotografias. Não é possível eliminar.
+                    </div>
+                }
+                else
+                {
+                    <form method="post">
+                        <input type="hidden" asp-for="Categoria!.Id" />
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-2"></i>Eliminar
+                            </button>
+                            <a asp-page="Index" class="btn btn-outline-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>

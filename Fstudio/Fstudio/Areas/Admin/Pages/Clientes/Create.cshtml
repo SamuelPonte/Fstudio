@@ -1,0 +1,102 @@
+@page
+@model CreateModel
+@{
+    ViewData["Title"] = "Novo Cliente";
+}
+
+<div class="mb-4">
+    <a asp-page="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-2"></i>Voltar
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-person-plus me-2"></i>Novo Cliente</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Cliente.Nome" class="form-label"></label>
+                            <input asp-for="Cliente.Nome" class="form-control" />
+                            <span asp-validation-for="Cliente.Nome" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Cliente.Email" class="form-label"></label>
+                            <input asp-for="Cliente.Email" type="email" class="form-control" />
+                            <span asp-validation-for="Cliente.Email" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Cliente.Telefone" class="form-label"></label>
+                            <input asp-for="Cliente.Telefone" class="form-control" />
+                            <span asp-validation-for="Cliente.Telefone" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Cliente.DataEvento" class="form-label"></label>
+                            <input asp-for="Cliente.DataEvento" type="date" class="form-control" />
+                            <span asp-validation-for="Cliente.DataEvento" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Cliente.TipoServico" class="form-label"></label>
+                            <select asp-for="Cliente.TipoServico" class="form-select">
+                                <option value="">Selecione</option>
+                                <option value="Casamento">Casamento</option>
+                                <option value="Pré-Casamento">Pré-Casamento</option>
+                                <option value="Noivado">Noivado</option>
+                                <option value="Trash the Dress">Trash the Dress</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                            <span asp-validation-for="Cliente.TipoServico" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Cliente.Estado" class="form-label"></label>
+                            <select asp-for="Cliente.Estado" class="form-select">
+                                <option value="Ativo">Ativo</option>
+                                <option value="Concluído">Concluído</option>
+                                <option value="Cancelado">Cancelado</option>
+                            </select>
+                            <span asp-validation-for="Cliente.Estado" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Cliente.Notas" class="form-label"></label>
+                        <textarea asp-for="Cliente.Notas" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Cliente.Notas" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input asp-for="CriarUtilizador" class="form-check-input" />
+                            <label asp-for="CriarUtilizador" class="form-check-label">
+                                Criar conta de utilizador para aceder à galeria privada
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg me-2"></i>Criar Cliente
+                        </button>
+                        <a asp-page="Index" class="btn btn-outline-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

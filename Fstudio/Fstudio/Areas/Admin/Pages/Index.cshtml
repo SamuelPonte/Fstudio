@@ -1,0 +1,128 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="row mb-4">
+    <div class="col">
+        <h2><i class="bi bi-speedometer2 me-2"></i>Dashboard</h2>
+        <p class="text-muted">Bem-vindo ao painel de administração do Fstudio</p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-subtitle mb-2 opacity-75">Fotografias</h6>
+                        <h2 class="card-title mb-0">@Model.TotalFotografias</h2>
+                    </div>
+                    <i class="bi bi-images fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-subtitle mb-2 opacity-75">Clientes</h6>
+                        <h2 class="card-title mb-0">@Model.TotalClientes</h2>
+                    </div>
+                    <i class="bi bi-people fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-dark">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-subtitle mb-2 opacity-75">Contactos Novos</h6>
+                        <h2 class="card-title mb-0">@Model.ContactosNaoLidos</h2>
+                    </div>
+                    <i class="bi bi-envelope fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-subtitle mb-2 opacity-75">Testemunhos Pendentes</h6>
+                        <h2 class="card-title mb-0">@Model.TestemunhosPendentes</h2>
+                    </div>
+                    <i class="bi bi-chat-quote fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-envelope me-2"></i>Contactos Recentes</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.ContactosRecentes?.Any() == true)
+                {
+                    <div class="list-group list-group-flush">
+                        @foreach (var contacto in Model.ContactosRecentes)
+                        {
+                            <a asp-page="/Contactos/Details" asp-route-id="@contacto.Id"
+                               class="list-group-item list-group-item-action d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="fw-bold">@contacto.Nome</div>
+                                    <small class="text-muted">@contacto.Email</small>
+                                </div>
+                                <span class="badge @(contacto.Lido ? "bg-secondary" : "bg-primary")">
+                                    @(contacto.Lido ? "Lido" : "Novo")
+                                </span>
+                            </a>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted mb-0">Sem contactos recentes.</p>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-images me-2"></i>Fotografias em Destaque</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.FotografiasDestaque?.Any() == true)
+                {
+                    <div class="row g-2">
+                        @foreach (var foto in Model.FotografiasDestaque)
+                        {
+                            <div class="col-4">
+                                <div class="position-relative">
+                                    <img src="@foto.ThumbnailUrl" alt="@foto.Titulo"
+                                         class="img-fluid rounded" style="height: 100px; width: 100%; object-fit: cover;" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted mb-0">Sem fotografias em destaque.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

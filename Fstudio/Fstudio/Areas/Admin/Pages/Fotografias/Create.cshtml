@@ -1,0 +1,84 @@
+@page
+@model CreateModel
+@{
+    ViewData["Title"] = "Nova Fotografia";
+}
+
+<div class="mb-4">
+    <a asp-page="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-2"></i>Voltar
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-image me-2"></i>Nova Fotografia</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Fotografia.Titulo" class="form-label"></label>
+                        <input asp-for="Fotografia.Titulo" class="form-control" />
+                        <span asp-validation-for="Fotografia.Titulo" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Fotografia.Descricao" class="form-label"></label>
+                        <textarea asp-for="Fotografia.Descricao" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Fotografia.Descricao" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Fotografia.CategoriaId" class="form-label"></label>
+                            <select asp-for="Fotografia.CategoriaId" asp-items="Model.Categorias" class="form-select">
+                                <option value="">Selecione uma categoria</option>
+                            </select>
+                            <span asp-validation-for="Fotografia.CategoriaId" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Fotografia.DataSessao" class="form-label"></label>
+                            <input asp-for="Fotografia.DataSessao" type="date" class="form-control" />
+                            <span asp-validation-for="Fotografia.DataSessao" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Imagem</label>
+                        <input type="file" name="ImagemFile" class="form-control" accept="image/*" required />
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input asp-for="Fotografia.Destaque" class="form-check-input" />
+                                <label asp-for="Fotografia.Destaque" class="form-check-label"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input asp-for="Fotografia.VisivelPortfolio" class="form-check-input" />
+                                <label asp-for="Fotografia.VisivelPortfolio" class="form-check-label"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg me-2"></i>Criar Fotografia
+                        </button>
+                        <a asp-page="Index" class="btn btn-outline-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

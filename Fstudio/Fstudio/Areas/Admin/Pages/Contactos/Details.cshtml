@@ -1,0 +1,70 @@
+@page "{id:int}"
+@model DetailsModel
+@{
+    ViewData["Title"] = "Ver Contacto";
+}
+
+<div class="mb-4">
+    <a asp-page="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-2"></i>Voltar
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-envelope-open me-2"></i>Mensagem de Contacto</h5>
+                <span class="badge @(Model.Contacto?.Lido == true ? "bg-success" : "bg-primary")">
+                    @(Model.Contacto?.Lido == true ? "Lido" : "Novo")
+                </span>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">Nome</dt>
+                    <dd class="col-sm-9">@Model.Contacto?.Nome</dd>
+
+                    <dt class="col-sm-3">Email</dt>
+                    <dd class="col-sm-9">
+                        <a href="mailto:@Model.Contacto?.Email">@Model.Contacto?.Email</a>
+                    </dd>
+
+                    <dt class="col-sm-3">Telefone</dt>
+                    <dd class="col-sm-9">@(Model.Contacto?.Telefone ?? "Não indicado")</dd>
+
+                    <dt class="col-sm-3">Data do Evento</dt>
+                    <dd class="col-sm-9">@(Model.Contacto?.DataEvento?.ToString("dd/MM/yyyy") ?? "Não indicada")</dd>
+
+                    <dt class="col-sm-3">Tipo de Serviço</dt>
+                    <dd class="col-sm-9">@(Model.Contacto?.TipoServico ?? "Não indicado")</dd>
+
+                    <dt class="col-sm-3">Data de Envio</dt>
+                    <dd class="col-sm-9">@Model.Contacto?.DataEnvio.ToString("dd/MM/yyyy HH:mm")</dd>
+                </dl>
+
+                <hr />
+
+                <h6>Mensagem</h6>
+                <div class="bg-light p-3 rounded">
+                    @Model.Contacto?.Mensagem
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex gap-2">
+                    <a href="mailto:@Model.Contacto?.Email" class="btn btn-primary">
+                        <i class="bi bi-reply me-2"></i>Responder por Email
+                    </a>
+                    @if (Model.Contacto?.Arquivado != true)
+                    {
+                        <form method="post" asp-page-handler="Arquivar">
+                            <input type="hidden" name="id" value="@Model.Contacto?.Id" />
+                            <button type="submit" class="btn btn-outline-secondary">
+                                <i class="bi bi-archive me-2"></i>Arquivar
+                            </button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

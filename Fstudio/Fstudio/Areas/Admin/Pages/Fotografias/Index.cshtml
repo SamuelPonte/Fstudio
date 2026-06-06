@@ -1,0 +1,98 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Fotografias";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-images me-2"></i>Fotografias</h2>
+    <a asp-page="Create" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-2"></i>Nova Fotografia
+    </a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <select asp-for="CategoriaId" asp-items="Model.Categorias" class="form-select">
+                    <option value="">Todas as categorias</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-outline-primary w-100">
+                    <i class="bi bi-search me-2"></i>Filtrar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Imagem</th>
+                        <th>Título</th>
+                        <th>Categoria</th>
+                        <th>Data</th>
+                        <th>Estado</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var foto in Model.Fotografias)
+                    {
+                        <tr>
+                            <td>
+                                @if (!string.IsNullOrEmpty(foto.ThumbnailUrl))
+                                {
+                                    <img src="@foto.ThumbnailUrl" alt="@foto.Titulo"
+                                         class="rounded" style="width: 60px; height: 40px; object-fit: cover;" />
+                                }
+                                else
+                                {
+                                    <div class="bg-light rounded d-flex align-items-center justify-content-center"
+                                         style="width: 60px; height: 40px;">
+                                        <i class="bi bi-image text-muted"></i>
+                                    </div>
+                                }
+                            </td>
+                            <td>
+                                <div>@foto.Titulo</div>
+                                @if (foto.Destaque)
+                                {
+                                    <span class="badge bg-warning text-dark">Destaque</span>
+                                }
+                            </td>
+                            <td>@foto.Categoria?.Nome</td>
+                            <td>@foto.DataSessao?.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                <span class="badge @(foto.VisivelPortfolio ? "bg-success" : "bg-secondary")">
+                                    @(foto.VisivelPortfolio ? "Visível" : "Oculta")
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <a asp-page="Edit" asp-route-id="@foto.Id" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a asp-page="Delete" asp-route-id="@foto.Id" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (!Model.Fotografias.Any())
+        {
+            <div class="text-center py-4 text-muted">
+                <i class="bi bi-image fs-1"></i>
+                <p class="mt-2">Nenhuma fotografia encontrada.</p>
+            </div>
+        }
+    </div>
+</div>
