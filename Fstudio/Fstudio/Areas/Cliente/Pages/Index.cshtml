@@ -1,0 +1,71 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Minha Galeria";
+}
+
+<div class="welcome-section text-center">
+    <h1 class="mb-3">Olá, @Model.Cliente?.Nome!</h1>
+    <p class="text-muted mb-0">
+        Bem-vindo à sua galeria privada. Aqui pode visualizar e descarregar as fotografias do seu evento.
+    </p>
+    @if (Model.Cliente?.DataEvento != null)
+    {
+        <p class="text-accent mt-2">
+            <i class="bi bi-calendar-heart me-2"></i>
+            @Model.Cliente.DataEvento?.ToString("dd 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("pt-PT"))
+        </p>
+    }
+</div>
+
+@if (Model.Fotografias.Any())
+{
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">
+            <i class="bi bi-images me-2"></i>
+            @Model.Fotografias.Count Fotografias
+        </h4>
+        <a asp-page="Download" class="btn btn-download">
+            <i class="bi bi-download me-2"></i>Descarregar Todas
+        </a>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var cf in Model.Fotografias)
+        {
+            <div class="col-md-4 col-lg-3">
+                <div class="card card-foto">
+                    <img src="@cf.Fotografia?.ImagemUrl" alt="@cf.Fotografia?.Titulo" />
+                    <div class="card-body">
+                        <h6 class="card-title mb-2">@cf.Fotografia?.Titulo</h6>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                @cf.Fotografia?.Categoria?.Nome
+                            </small>
+                            <a asp-page="Download" asp-route-id="@cf.FotografiaId" class="btn btn-sm btn-outline-accent">
+                                <i class="bi bi-download"></i>
+                            </a>
+                        </div>
+                        @if (cf.Descarregada)
+                        {
+                            <small class="text-success d-block mt-2">
+                                <i class="bi bi-check-circle me-1"></i>Descarregada
+                            </small>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="text-center py-5">
+        <i class="bi bi-images text-muted" style="font-size: 5rem;"></i>
+        <h4 class="mt-4">A sua galeria está a ser preparada</h4>
+        <p class="text-muted">
+            As fotografias do seu evento serão adicionadas aqui em breve.
+            Receberá uma notificação quando estiverem disponíveis.
+        </p>
+    </div>
+}
