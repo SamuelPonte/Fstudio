@@ -1,0 +1,85 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Testemunhos";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-chat-quote me-2"></i>Testemunhos</h2>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Testemunho</th>
+                    <th>Avaliação</th>
+                    <th>Data</th>
+                    <th>Estado</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var testemunho in Model.Testemunhos)
+                {
+                    <tr>
+                        <td>@testemunho.Cliente?.Nome</td>
+                        <td>
+                            <span title="@testemunho.Texto">
+                                @(testemunho.Texto.Length > 100 ? testemunho.Texto[..100] + "..." : testemunho.Texto)
+                            </span>
+                        </td>
+                        <td>
+                            @for (int i = 0; i < testemunho.Avaliacao; i++)
+                            {
+                                <i class="bi bi-star-fill text-warning"></i>
+                            }
+                            @for (int i = testemunho.Avaliacao; i < 5; i++)
+                            {
+                                <i class="bi bi-star text-muted"></i>
+                            }
+                        </td>
+                        <td>@testemunho.DataCriacao.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <span class="badge @(testemunho.Aprovado ? "bg-success" : "bg-warning text-dark")">
+                                @(testemunho.Aprovado ? "Aprovado" : "Pendente")
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            @if (!testemunho.Aprovado)
+                            {
+                                <form method="post" asp-page-handler="Aprovar" asp-route-id="@testemunho.Id" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-success" title="Aprovar">
+                                        <i class="bi bi-check-lg"></i>
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form method="post" asp-page-handler="Rejeitar" asp-route-id="@testemunho.Id" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-warning" title="Retirar aprovação">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </form>
+                            }
+                            <form method="post" asp-page-handler="Eliminar" asp-route-id="@testemunho.Id" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (!Model.Testemunhos.Any())
+        {
+            <div class="text-center py-4 text-muted">
+                <i class="bi bi-chat-square-quote fs-1"></i>
+                <p class="mt-2">Nenhum testemunho encontrado.</p>
+            </div>
+        }
+    </div>
+</div>
