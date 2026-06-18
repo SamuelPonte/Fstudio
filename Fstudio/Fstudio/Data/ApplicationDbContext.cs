@@ -78,14 +78,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         builder.Entity<ApplicationUser>(entity =>
         {
             entity.Property(e => e.Id)
-                .HasColumnType("nvarchar(450)")
                 .HasMaxLength(450);
         });
 
         builder.Entity<IdentityRole>(entity =>
         {
             entity.Property(e => e.Id)
-                .HasColumnType("nvarchar(450)")
                 .HasMaxLength(450);
         });
 
