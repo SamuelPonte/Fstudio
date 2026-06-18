@@ -4,7 +4,7 @@
 // Executada automaticamente no arranque da aplicação
 // ============================================================================
 
-using Fstudio.Models.Entities;
+using Fstudio.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -142,7 +142,7 @@ public static class DataSeeder
                     Telefone = "+351 912 345 678",
                     DataEvento = DateTime.UtcNow.AddMonths(3),  // Evento daqui a 3 meses
                     TipoServico = "Casamento",
-                    Estado = "Ativo",
+                    Estado = EstadoCliente.Ativo,
                     UserId = clienteUser.Id,  // Associar ao ApplicationUser criado
                     DataCriacao = DateTime.UtcNow
                 };

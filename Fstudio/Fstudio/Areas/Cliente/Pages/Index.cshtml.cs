@@ -1,5 +1,5 @@
 using Fstudio.Data;
-using Fstudio.Models.Entities;
+using Fstudio.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +20,7 @@ public class IndexModel : PageModel
         _userManager = userManager;
     }
 
-    public Fstudio.Models.Entities.Cliente? Cliente { get; set; }
+    public Fstudio.Data.Models.Cliente? Cliente { get; set; }
     public List<ClienteFotografia> Fotografias { get; set; } = [];
 
     public async Task<IActionResult> OnGetAsync()

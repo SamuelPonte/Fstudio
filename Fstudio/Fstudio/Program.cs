@@ -7,7 +7,7 @@
 using Fstudio.Data;
 using Fstudio.Data.Seed;
 using Fstudio.Hubs;
-using Fstudio.Models.Entities;
+using Fstudio.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

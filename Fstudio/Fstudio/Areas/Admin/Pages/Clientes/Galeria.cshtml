@@ -41,8 +41,8 @@
                                         }
                                     </div>
                                     <div class="card-footer p-2">
-                                        <form method="post" asp-page-handler="RemoverFoto">
-                                            <input type="hidden" name="clienteFotografiaId" value="@cf.Id" />
+                                        <form method="post" asp-page-handler="RemoverFoto" asp-route-id="@Model.Cliente.Id">
+                                            <input type="hidden" name="fotografiaId" value="@cf.FotografiaId" />
                                             <button type="submit" class="btn btn-sm btn-outline-danger w-100">
                                                 <i class="bi bi-x-lg me-1"></i>Remover
                                             </button>

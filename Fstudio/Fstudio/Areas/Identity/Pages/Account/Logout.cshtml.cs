@@ -3,7 +3,7 @@
 // Página de término de sessão
 // ============================================================================
 
-using Fstudio.Models.Entities;
+using Fstudio.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

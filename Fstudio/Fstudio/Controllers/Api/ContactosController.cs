@@ -1,7 +1,7 @@
 using Fstudio.Data;
 using Fstudio.Hubs;
-using Fstudio.Models.Entities;
-using Fstudio.Models.ViewModels;
+using Fstudio.Data.Models;
+using Fstudio.Data.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;

@@ -1,10 +1,10 @@
 using Fstudio.Data;
-using Fstudio.Models.Entities;
+using Fstudio.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using ClienteEntity = Fstudio.Models.Entities.Cliente;
+using ClienteEntity = Fstudio.Data.Models.Cliente;
 
 namespace Fstudio.Areas.Admin.Pages.Clientes;
 
@@ -63,9 +63,9 @@ public class GaleriaModel : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPostRemoverFotoAsync(int id, int clienteFotografiaId)
+    public async Task<IActionResult> OnPostRemoverFotoAsync(int id, int fotografiaId)
     {
-        var cf = await _context.ClienteFotografias.FindAsync(clienteFotografiaId);
+        var cf = await _context.ClienteFotografias.FindAsync(id, fotografiaId);
         if (cf != null)
         {
             _context.ClienteFotografias.Remove(cf);

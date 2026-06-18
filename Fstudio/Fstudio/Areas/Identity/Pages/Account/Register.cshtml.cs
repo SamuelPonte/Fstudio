@@ -4,7 +4,7 @@
 // ============================================================================
 
 using System.ComponentModel.DataAnnotations;
-using Fstudio.Models.Entities;
+using Fstudio.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
