@@ -1,10 +1,10 @@
 using Fstudio.Data;
-using Fstudio.Models.Entities;
+using Fstudio.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using ClienteEntity = Fstudio.Models.Entities.Cliente;
+using ClienteEntity = Fstudio.Data.Models.Cliente;
 
 namespace Fstudio.Areas.Admin.Pages.Clientes;
 
@@ -21,10 +21,11 @@ public class CreateModel : PageModel
     }
 
     [BindProperty]
-    public ClienteEntity Cliente { get; set; } = new() { Estado = "Ativo" };
+    public ClienteEntity Cliente { get; set; } = new() { Estado = EstadoCliente.Ativo };
 
     [BindProperty]
-    public bool CriarUtilizador { get; set; }
+    public bool CriarUtilizador { get; set; }    
+
 
     public IActionResult OnGet()
     {

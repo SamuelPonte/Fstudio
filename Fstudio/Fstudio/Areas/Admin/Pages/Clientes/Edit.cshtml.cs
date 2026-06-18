@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using ClienteEntity = Fstudio.Models.Entities.Cliente;
+using ClienteEntity = Fstudio.Data.Models.Cliente;
 
 namespace Fstudio.Areas.Admin.Pages.Clientes;
 
