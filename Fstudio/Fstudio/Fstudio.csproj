@@ -63,6 +63,7 @@
       Comandos: dotnet ef migrations add, dotnet ef database update
     -->
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Migrations\" />
