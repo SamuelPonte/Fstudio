@@ -10,6 +10,7 @@ using Fstudio.Hubs;
 using Fstudio.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
 
 // ============================================================================
 // CRIAÇÃO DO BUILDER
@@ -88,6 +89,19 @@ builder.Services.AddRazorPages(options =>
 // Adicionar suporte a Controllers (para endpoints API)
 builder.Services.AddControllers();
 
+// Adicionar suporte ao Swagger/OpenAPI para documentar e testar a API
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Fstudio API",
+        Version = "v1",
+        Description = "API para gestão de categorias, fotografias, contactos e dados da aplicação Fstudio."
+    });
+});
+
 // ============================================================================
 // CONFIGURAÇÃO DE SIGNALR (COMUNICAÇÃO EM TEMPO REAL)
 // ============================================================================
@@ -145,6 +159,15 @@ else
     // Ativar HSTS (HTTP Strict Transport Security)
     app.UseHsts();
 }
+
+// Ativar Swagger para documentação e testes da API
+app.UseSwagger();
+
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fstudio API v1");
+    c.RoutePrefix = "swagger";
+});
 
 // Redirecionar HTTP para HTTPS
 app.UseHttpsRedirection();
