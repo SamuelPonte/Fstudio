@@ -58,7 +58,6 @@ public class Cliente
     /// Estado do cliente (Ativo, Inativo, etc.)
     /// </summary>
     [Required (ErrorMessage = "O {0} é de preenchimento obrigatório")]
-    [StringLength(50, ErrorMessage = "O {0} não pode exceder {1} caracteres")]
     [Display(Name = "Estado")]
     public EstadoCliente Estado { get; set; } = EstadoCliente.Ativo; // Valor padrão "Ativo"
 
