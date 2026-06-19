@@ -34,35 +34,39 @@
       Fornece páginas de diagnóstico para erros de Entity Framework
       Útil em desenvolvimento para ver erros de migrações
     -->
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.9" />
 
     <!--
       Microsoft.AspNetCore.Identity.EntityFrameworkCore
       Integração do ASP.NET Core Identity com Entity Framework Core
       Permite armazenar utilizadores, roles, claims na base de dados
     -->
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.9" />
 
     <!--
       Microsoft.AspNetCore.Identity.UI
       Páginas Razor pré-construídas para Login, Register, Forgot Password, etc.
       Podem ser personalizadas através de scaffolding
     -->
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.9" />
 
     <!--
       Microsoft.EntityFrameworkCore.Sqlite
       Provider SQLite para Entity Framework Core
       Permite usar ficheiro SQLite como base de dados (fstudio.db)
     -->
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.9" />
 
     <!--
       Microsoft.EntityFrameworkCore.Tools
       Ferramentas CLI para Entity Framework Core
       Comandos: dotnet ef migrations add, dotnet ef database update
     -->
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.1" />
   </ItemGroup>
   <ItemGroup>
