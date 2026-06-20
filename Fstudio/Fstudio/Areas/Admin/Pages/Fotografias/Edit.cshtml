@@ -57,8 +57,13 @@
                                      class="img-thumbnail" style="max-height: 200px;" />
                             </div>
                         }
-                        <input type="file" name="ImagemFile" class="form-control" accept="image/*" />
+                        <input type="file"
+                               name="ImagemFile"
+                               id="ImagemFile"
+                               class="form-control"
+                               accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
                         <div class="form-text">Deixe em branco para manter a imagem atual</div>
+                        @Html.ValidationMessage("ImagemFile", "", new { @class = "text-danger" })
                     </div>
 
                     <div class="row mb-3">
