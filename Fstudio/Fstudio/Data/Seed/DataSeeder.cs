@@ -230,8 +230,8 @@ public static class DataSeeder
 
         // Obter IDs das categorias criadas
         var categorias = await context.Categorias.ToListAsync();
-        if (!categorias.Any()) return;
-
+        if (categorias.Count == 0) return;
+    
         int idCasamentos    = categorias.FirstOrDefault(c => c.Slug == "casamentos")?.Id    ?? categorias[0].Id;
         int idPreCasamento  = categorias.FirstOrDefault(c => c.Slug == "pre-casamento")?.Id ?? categorias[0].Id;
         int idNoivados      = categorias.FirstOrDefault(c => c.Slug == "noivados")?.Id      ?? categorias[0].Id;
@@ -262,8 +262,7 @@ public static class DataSeeder
                 {
                     ClienteId    = cliente.Id,
                     FotografiaId = foto.Id,
-                    DataAdicao   = DateTime.UtcNow,
-                    Acesso       = true
+                    DataAdicao   = DateTime.UtcNow
                 });
             }
             await context.SaveChangesAsync();

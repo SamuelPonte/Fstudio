@@ -49,7 +49,7 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        // Delete image file
+        // Remove o ficheiro físico da imagem antes de apagar o registo da base de dados.
         if (!string.IsNullOrEmpty(fotografia.ImagemUrl))
         {
             var imagePath = Path.Combine(_environment.WebRootPath, fotografia.ImagemUrl.TrimStart('/'));
