@@ -34,7 +34,12 @@
                         </td>
                         <td>@contacto.Email</td>
                         <td>@contacto.TipoServico</td>
-                        <td>@contacto.DataEnvio.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>
+                            <time class="data-local"
+                                  datetime="@DateTime.SpecifyKind(contacto.DataEnvio, DateTimeKind.Utc).ToString("o")">
+                                @contacto.DataEnvio.ToString("dd/MM/yyyy HH:mm")
+                            </time>
+                        </td>
                         <td>
                             @if (contacto.Arquivado)
                             {
@@ -75,3 +80,17 @@
         }
     </div>
 </div>
+
+<script>
+    document.querySelectorAll(".data-local").forEach(function (elemento) {
+        const dataUtc = new Date(elemento.getAttribute("datetime"));
+
+        elemento.textContent = dataUtc.toLocaleString(undefined, {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+    });
+</script>
