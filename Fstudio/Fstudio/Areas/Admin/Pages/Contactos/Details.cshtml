@@ -39,7 +39,15 @@
                     <dd class="col-sm-9">@(Model.Contacto?.TipoServico ?? "Não indicado")</dd>
 
                     <dt class="col-sm-3">Data de Envio</dt>
-                    <dd class="col-sm-9">@Model.Contacto?.DataEnvio.ToString("dd/MM/yyyy HH:mm")</dd>
+                    <dd class="col-sm-9">
+                        @if (Model.Contacto != null)
+                        {
+                            <time class="data-local"
+                                  datetime="@DateTime.SpecifyKind(Model.Contacto.DataEnvio, DateTimeKind.Utc).ToString("o")">
+                                @Model.Contacto.DataEnvio.ToString("dd/MM/yyyy HH:mm")
+                            </time>
+                        }
+                    </dd>
                 </dl>
 
                 <hr />
@@ -68,3 +76,19 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll(".data-local").forEach(function (elemento) {
+            const dataUtc = new Date(elemento.getAttribute("datetime"));
+
+            elemento.textContent = dataUtc.toLocaleString(undefined, {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+        });
+    </script>
+}
