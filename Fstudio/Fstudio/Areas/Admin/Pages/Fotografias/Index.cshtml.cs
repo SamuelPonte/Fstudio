@@ -28,6 +28,7 @@ public class IndexModel : PageModel
     {
         Categorias = new SelectList(await _context.Categorias.OrderBy(c => c.Nome).ToListAsync(), "Id", "Nome");
 
+        // Carrega as fotografias com a respetiva categoria, aplicando o filtro de categoria quando selecionado.
         var query = _context.Fotografias.Include(f => f.Categoria).AsQueryable();
 
         if (CategoriaId.HasValue)
