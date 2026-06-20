@@ -10,10 +10,13 @@
         :root {
             --sidebar-width: 250px;
         }
+
         body {
             min-height: 100vh;
             background-color: #f8f9fa;
         }
+
+        /* ── Sidebar ── */
         .sidebar {
             width: var(--sidebar-width);
             position: fixed;
@@ -22,24 +25,30 @@
             height: 100vh;
             background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
             padding-top: 1rem;
-            z-index: 1000;
+            z-index: 1040;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
         }
+
         .sidebar .nav-link {
             color: rgba(255,255,255,0.8);
             padding: 0.75rem 1.5rem;
             border-left: 3px solid transparent;
             transition: all 0.3s;
         }
+
         .sidebar .nav-link:hover,
         .sidebar .nav-link.active {
             color: #fff;
             background: rgba(255,255,255,0.1);
             border-left-color: #0d6efd;
         }
+
         .sidebar .nav-link i {
             margin-right: 0.75rem;
             width: 20px;
         }
+
         .sidebar-brand {
             color: #fff;
             font-size: 1.5rem;
@@ -47,52 +56,122 @@
             padding: 1rem 1.5rem;
             margin-bottom: 1rem;
             border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        .main-content {
-            margin-left: var(--sidebar-width);
-            padding: 2rem;
+
+        /* ── Sidebar overlay (mobile) ── */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1039;
         }
+
+        /* ── Top navbar ── */
         .navbar-admin {
             background: #fff;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-left: var(--sidebar-width);
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+            transition: transform 0.3s ease;
         }
+
+        .navbar-admin.hidden {
+            transform: translateY(-100%);
+        }
+
+        /* ── Main content ── */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+            min-width: 0;
+        }
+
+        /* ── Cards / Tables ── */
         .card {
             border: none;
             box-shadow: 0 0 15px rgba(0,0,0,0.05);
         }
+
         .card-header {
             background: #fff;
             border-bottom: 1px solid #eee;
         }
+
         .btn-primary {
             background: linear-gradient(45deg, #1a1a2e, #16213e);
             border: none;
         }
+
         .btn-primary:hover {
             background: linear-gradient(45deg, #16213e, #1a1a2e);
         }
+
         .table th {
             font-weight: 600;
             background: #f8f9fa;
         }
+
+        /* Tabelas responsivas — scroll horizontal em vez de overflow */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
         .badge-status {
             font-size: 0.8rem;
             padding: 0.4em 0.8em;
         }
+
         .notification-badge {
             position: absolute;
             top: -5px;
             right: -5px;
             font-size: 0.7rem;
         }
+
+        /* ── Mobile: sidebar esconde, conteúdo ocupa tudo ── */
+        @@media (max-width: 991.98px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-overlay.open {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .navbar-admin {
+                /* Em mobile a navbar fica sempre visível (não auto-hide) */
+                position: sticky;
+            }
+        }
     </style>
     @RenderSection("Styles", required: false)
 </head>
 <body>
-    <aside class="sidebar">
+    <!-- Overlay escuro por baixo da sidebar em mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
-            <i class="bi bi-camera"></i> Fstudio
+            <span><i class="bi bi-camera"></i> Fstudio</span>
+            <!-- Botão para fechar sidebar em mobile -->
+            <button class="btn btn-link text-white d-lg-none p-0" onclick="toggleSidebar()" aria-label="Fechar menu">
+                <i class="bi bi-x-lg"></i>
+            </button>
         </div>
         <nav class="nav flex-column">
             <a class="nav-link" asp-area="Admin" asp-page="/Index">
@@ -118,15 +197,22 @@
             <a class="nav-link" asp-area="" asp-page="/Index">
                 <i class="bi bi-globe"></i> Ver Site
             </a>
-            <a class="nav-link" asp-area="Identity" asp-page="/Account/Logout">
-                <i class="bi bi-box-arrow-right"></i> Sair
-            </a>
+            <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="m-0">
+                <button type="submit" class="nav-link btn btn-link w-100 text-start">
+                    <i class="bi bi-box-arrow-right"></i> Sair
+                </button>
+            </form>
         </nav>
     </aside>
 
-    <nav class="navbar navbar-admin navbar-expand-lg sticky-top">
+    <!-- Navbar de topo: auto-hide ao scrollar para baixo, aparece ao scrollar para cima -->
+    <nav class="navbar navbar-admin navbar-expand-lg" id="adminTopNav">
         <div class="container-fluid">
-            <span class="navbar-text">
+            <!-- Botão hamburger (só visível em mobile) -->
+            <button class="btn btn-link d-lg-none me-2 p-1" onclick="toggleSidebar()" aria-label="Abrir menu">
+                <i class="bi bi-list fs-4 text-dark"></i>
+            </button>
+            <span class="navbar-text ms-auto">
                 <i class="bi bi-person-circle me-2"></i>
                 @User.Identity?.Name
             </span>
@@ -140,29 +226,62 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
     <script>
-        // SignalR connection for notifications
+        // ── Sidebar toggle (mobile) ──────────────────────────────────────
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
+        }
+
+        // ── Auto-hide navbar ao scrollar para baixo ──────────────────────
+        (function () {
+            const nav = document.getElementById('adminTopNav');
+            let lastScroll = 0;
+            const threshold = 60; // px antes de começar a esconder
+
+            window.addEventListener('scroll', function () {
+                // Apenas em ecrãs grandes (sidebar visível)
+                if (window.innerWidth < 992) return;
+
+                const current = window.scrollY;
+                if (current > lastScroll && current > threshold) {
+                    nav.classList.add('hidden');    // a scrollar para baixo → esconder
+                } else {
+                    nav.classList.remove('hidden'); // a scrollar para cima → mostrar
+                }
+                lastScroll = current;
+            });
+        })();
+
+        // ── Marcar link ativo na sidebar ─────────────────────────────────
+        document.querySelectorAll('.sidebar .nav-link').forEach(function (link) {
+            if (link.href && link.href === window.location.href) {
+                link.classList.add('active');
+            }
+        });
+
+        // ── SignalR — notificações em tempo real ─────────────────────────
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/hubs/notificacao")
             .withAutomaticReconnect()
             .build();
 
-        connection.on("NovoContacto", function(nome, email, mensagem) {
+        connection.on("NovoContacto", function (nome, email, mensagem) {
             const badge = document.getElementById("contactos-badge");
             if (badge) {
                 let count = parseInt(badge.textContent) || 0;
                 badge.textContent = count + 1;
                 badge.classList.remove("d-none");
             }
-
-            // Show toast notification
             showNotification("Novo Contacto", `${nome} enviou uma mensagem.`);
         });
 
-        connection.on("ReceberNotificacao", function(titulo, mensagem) {
+        connection.on("ReceberNotificacao", function (titulo, mensagem) {
             showNotification(titulo, mensagem);
         });
 
-        connection.start().catch(function(err) {
+        connection.start().catch(function (err) {
             console.error("SignalR connection error:", err.toString());
         });
 
@@ -176,8 +295,7 @@
                         <strong>${titulo}</strong><br>${mensagem}
                     </div>
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                </div>
-            `;
+                </div>`;
             document.body.appendChild(toast);
             const bsToast = new bootstrap.Toast(toast, { delay: 5000 });
             bsToast.show();
