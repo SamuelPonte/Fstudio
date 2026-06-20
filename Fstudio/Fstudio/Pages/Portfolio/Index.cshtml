@@ -13,48 +13,46 @@
 </div>
 
 <div class="container pb-5">
-    <div class="d-flex justify-content-center flex-wrap gap-3 mb-5 animate-on-scroll">
-        <a asp-page="/Portfolio/Index" class="btn @(Model.CategoriaSlug == null ? "btn-artistic" : "btn-outline-secondary")" style="@(Model.CategoriaSlug == null ? "" : "border-color: #ccc;")">
+    <div class="d-flex justify-content-center flex-wrap gap-3 mt-5 mb-5 animate-on-scroll">
+        <a asp-page="/Portfolio/Index"
+           class="btn d-inline-flex align-items-center @(string.IsNullOrEmpty(Model.CategoriaSlug) ? "btn-artistic" : "btn-outline-secondary")"
+           style="@(string.IsNullOrEmpty(Model.CategoriaSlug) ? "" : "border-color: #ccc;")">
             Todos
         </a>
         @foreach (var categoria in Model.Categorias)
         {
             <a asp-page="/Portfolio/Index" asp-route-categoria="@categoria.Slug"
-               class="btn @(Model.CategoriaSlug == categoria.Slug ? "btn-artistic" : "btn-outline-secondary")" style="@(Model.CategoriaSlug == categoria.Slug ? "" : "border-color: #ccc;")">
+               class="btn d-inline-flex align-items-center @(Model.CategoriaSlug == categoria.Slug ? "btn-artistic" : "btn-outline-secondary")"
+               style="@(Model.CategoriaSlug == categoria.Slug ? "" : "border-color: #ccc;")">
                 @categoria.Nome
             </a>
         }
     </div>
 
-    @{
-        var portfolioImages = new[] {
-            ("https://images.unsplash.com/photo-1519741497674-611481863552?w=800", "Quinta das Flores", "Casamento"),
-            ("https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800", "Igreja de São Pedro", "Casamento"),
-            ("https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=800", "Praia da Arrábida", "Pré-Casamento"),
-            ("https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800", "Jardim Botânico", "Noivado"),
-            ("https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=800", "Palácio de Sintra", "Casamento"),
-            ("https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800", "Hotel Pestana", "Casamento"),
-            ("https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800", "Serra da Estrela", "Pré-Casamento"),
-            ("https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=800", "Mosteiro dos Jerónimos", "Casamento"),
-            ("https://images.unsplash.com/photo-1460978812857-470ed1c77af0?w=800", "Douro Vineyards", "Casamento"),
-            ("https://images.unsplash.com/photo-1529636798458-92182e662485?w=800", "Parque das Nações", "Noivado"),
-            ("https://images.unsplash.com/photo-1544078751-58fee2d8a03b?w=800", "Convento de Mafra", "Casamento"),
-            ("https://images.unsplash.com/photo-1525772764200-be829a350797?w=800", "Alfama Lisboa", "Pré-Casamento")
-        };
+    @if (!Model.Fotografias.Any())
+    {
+        <div class="text-center py-5">
+            <p class="text-muted">Não existem fotografias disponíveis nesta categoria.</p>
+        </div>
     }
+    else
+    {
+        <div class="portfolio-grid">
+            @foreach (var item in Model.Fotografias.Select((fotografia, index) => new { fotografia, index }))
+            {
+                <div class="portfolio-item animate-on-scroll animate-delay-@((item.index % 6) + 1)">
+                    <img src="@item.fotografia.ImagemUrl"
+                         alt="@item.fotografia.Titulo"
+                         loading="lazy" />
 
-    <div class="portfolio-grid">
-        @for (int i = 0; i < portfolioImages.Length; i++)
-        {
-            <div class="portfolio-item animate-on-scroll animate-delay-@((i % 6) + 1)">
-                <img src="@portfolioImages[i].Item1" alt="@portfolioImages[i].Item2" loading="lazy" />
-                <div class="overlay">
-                    <h5>@portfolioImages[i].Item2</h5>
-                    <span>@portfolioImages[i].Item3</span>
+                    <div class="overlay">
+                        <h5>@item.fotografia.Titulo</h5>
+                        <span>@item.fotografia.Categoria?.Nome</span>
+                    </div>
                 </div>
-            </div>
-        }
-    </div>
+            }
+        </div>
+    }
 
     <div class="text-center mt-5 animate-on-scroll">
         <p class="text-muted mb-4">Quer ver mais trabalhos? Entre em contacto para uma sessão personalizada.</p>
