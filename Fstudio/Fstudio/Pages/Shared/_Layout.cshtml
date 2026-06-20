@@ -513,43 +513,10 @@
                     {
                         @if (User.IsInRole("Admin"))
                         {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-accent" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <li class="nav-item">
+                                <a class="nav-link text-accent" asp-area="Admin" asp-page="/Index">
                                     <i class="bi bi-shield-lock me-1"></i>Admin
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li>
-                                        <a class="dropdown-item" asp-area="Admin" asp-page="/Index">
-                                            <i class="bi bi-speedometer2 me-2"></i>Dashboard
-                                        </a>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li>
-                                        <a class="dropdown-item" asp-area="Admin" asp-page="/Fotografias/Index">
-                                            <i class="bi bi-image me-2"></i>Fotografias
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" asp-area="Admin" asp-page="/Categorias/Index">
-                                            <i class="bi bi-tag me-2"></i>Categorias
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" asp-area="Admin" asp-page="/Clientes/Index">
-                                            <i class="bi bi-people me-2"></i>Clientes
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" asp-area="Admin" asp-page="/Contactos/Index">
-                                            <i class="bi bi-envelope me-2"></i>Contactos
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" asp-area="Admin" asp-page="/Testemunhos/Index">
-                                            <i class="bi bi-chat-quote me-2"></i>Testemunhos
-                                        </a>
-                                    </li>
-                                </ul>
                             </li>
                         }
                         else if (User.IsInRole("Cliente"))
