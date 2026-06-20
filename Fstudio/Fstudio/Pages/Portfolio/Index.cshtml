@@ -13,16 +13,17 @@
 </div>
 
 <div class="container pb-5">
-    <div class="d-flex justify-content-center flex-wrap gap-3 mb-5 animate-on-scroll">
+    <div class="d-flex justify-content-center flex-wrap gap-3 mt-5 mb-5 animate-on-scroll">
         <a asp-page="/Portfolio/Index"
-           class="btn @(string.IsNullOrEmpty(Model.CategoriaSlug) ? "btn-artistic" : "btn-outline-secondary")"
+           class="btn d-inline-flex align-items-center @(string.IsNullOrEmpty(Model.CategoriaSlug) ? "btn-artistic" : "btn-outline-secondary")"
            style="@(string.IsNullOrEmpty(Model.CategoriaSlug) ? "" : "border-color: #ccc;")">
             Todos
         </a>
         @foreach (var categoria in Model.Categorias)
         {
             <a asp-page="/Portfolio/Index" asp-route-categoria="@categoria.Slug"
-               class="btn @(Model.CategoriaSlug == categoria.Slug ? "btn-artistic" : "btn-outline-secondary")" style="@(Model.CategoriaSlug == categoria.Slug ? "" : "border-color: #ccc;")">
+               class="btn d-inline-flex align-items-center @(Model.CategoriaSlug == categoria.Slug ? "btn-artistic" : "btn-outline-secondary")"
+               style="@(Model.CategoriaSlug == categoria.Slug ? "" : "border-color: #ccc;")">
                 @categoria.Nome
             </a>
         }
