@@ -42,6 +42,9 @@ public static class DataSeeder
         await SeedRolesAsync(roleManager);
         await SeedUsersAsync(userManager, context);
         await SeedCategoriasAsync(context);
+        await SeedFotografiasAsync(context);
+        await SeedTestemunhosAsync(context);
+        await SeedContactosAsync(context);
     }
 
     /// <summary>
@@ -215,6 +218,94 @@ public static class DataSeeder
         context.Categorias.AddRange(categorias);
 
         // Guardar alterações na base de dados
+        await context.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Cria fotografias de demonstração associadas às categorias existentes.
+    /// </summary>
+    private static async Task SeedFotografiasAsync(ApplicationDbContext context)
+    {
+        if (await context.Fotografias.AnyAsync()) return;
+
+        // Obter IDs das categorias criadas
+        var categorias = await context.Categorias.ToListAsync();
+        if (!categorias.Any()) return;
+
+        int idCasamentos    = categorias.FirstOrDefault(c => c.Slug == "casamentos")?.Id    ?? categorias[0].Id;
+        int idPreCasamento  = categorias.FirstOrDefault(c => c.Slug == "pre-casamento")?.Id ?? categorias[0].Id;
+        int idNoivados      = categorias.FirstOrDefault(c => c.Slug == "noivados")?.Id      ?? categorias[0].Id;
+        int idDetalhes      = categorias.FirstOrDefault(c => c.Slug == "detalhes")?.Id      ?? categorias[0].Id;
+
+        // URLs de imagens de demonstração (Unsplash — uso livre)
+        var fotografias = new List<Fotografia>
+        {
+            new() { Titulo = "Ana & Miguel — Quinta de Monserrate",    CategoriaId = idCasamentos,   ImagemUrl = "https://images.unsplash.com/photo-1519741497674-611481863552?w=800", ThumbnailUrl = "https://images.unsplash.com/photo-1519741497674-611481863552?w=400", VisivelPortfolio = true, Destaque = true,  DataSessao = new DateTime(2025, 6, 14), DataCriacao = DateTime.UtcNow },
+            new() { Titulo = "Sofia & João — Palácio de Queluz",       CategoriaId = idCasamentos,   ImagemUrl = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800", ThumbnailUrl = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=400", VisivelPortfolio = true, Destaque = true,  DataSessao = new DateTime(2025, 9, 6),  DataCriacao = DateTime.UtcNow },
+            new() { Titulo = "Inês & Rui — Sessão Pré-Casamento",      CategoriaId = idPreCasamento, ImagemUrl = "https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=800", ThumbnailUrl = "https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=400", VisivelPortfolio = true, Destaque = false, DataSessao = new DateTime(2025, 4, 20), DataCriacao = DateTime.UtcNow },
+            new() { Titulo = "Mariana & Tiago — Noivado na Praia",     CategoriaId = idNoivados,     ImagemUrl = "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800", ThumbnailUrl = "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=400", VisivelPortfolio = true, Destaque = false, DataSessao = new DateTime(2025, 2, 14), DataCriacao = DateTime.UtcNow },
+            new() { Titulo = "Detalhes — Anéis e Convites",            CategoriaId = idDetalhes,     ImagemUrl = "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=800", ThumbnailUrl = "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=400", VisivelPortfolio = true, Destaque = false, DataSessao = new DateTime(2025, 6, 14), DataCriacao = DateTime.UtcNow },
+            new() { Titulo = "Catarina & Paulo — Jardim do Palácio",   CategoriaId = idCasamentos,   ImagemUrl = "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800", ThumbnailUrl = "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=400", VisivelPortfolio = true, Destaque = false, DataSessao = new DateTime(2025, 7, 19), DataCriacao = DateTime.UtcNow },
+        };
+
+        context.Fotografias.AddRange(fotografias);
+        await context.SaveChangesAsync();
+
+        // Associar 2 fotografias ao cliente de demonstração
+        var cliente = await context.Clientes.FirstOrDefaultAsync(c => c.Email == "cliente@demo.com");
+        if (cliente != null)
+        {
+            var fotos = await context.Fotografias.Take(2).ToListAsync();
+            foreach (var foto in fotos)
+            {
+                context.ClienteFotografias.Add(new ClienteFotografia
+                {
+                    ClienteId    = cliente.Id,
+                    FotografiaId = foto.Id,
+                    DataAdicao   = DateTime.UtcNow,
+                    Acesso       = true
+                });
+            }
+            await context.SaveChangesAsync();
+        }
+    }
+
+    /// <summary>
+    /// Cria testemunhos de demonstração aprovados para apresentar no site.
+    /// </summary>
+    private static async Task SeedTestemunhosAsync(ApplicationDbContext context)
+    {
+        if (await context.Testemunhos.AnyAsync()) return;
+
+        var cliente = await context.Clientes.FirstOrDefaultAsync();
+        if (cliente == null) return;
+
+        var testemunhos = new List<Testemunho>
+        {
+            new() { Texto = "O Fstudio capturou cada momento do nosso casamento de forma absolutamente mágica. As fotografias ficaram simplesmente perfeitas e vão ficar na nossa memória para sempre.", Avaliacao = 5, Aprovado = true, DataAprovacao = DateTime.UtcNow, ClienteId = cliente.Id, DataCriacao = DateTime.UtcNow },
+            new() { Texto = "Profissionalismo e talento incrível. Desde a sessão de pré-casamento até ao grande dia, a equipa do Fstudio esteve sempre presente e com uma energia contagiante.", Avaliacao = 5, Aprovado = true, DataAprovacao = DateTime.UtcNow, ClienteId = cliente.Id, DataCriacao = DateTime.UtcNow },
+            new() { Texto = "As nossas fotografias de noivado superaram todas as expectativas. O resultado foi cinematográfico e natural ao mesmo tempo. Recomendamos de olhos fechados!", Avaliacao = 5, Aprovado = true, DataAprovacao = DateTime.UtcNow, ClienteId = cliente.Id, DataCriacao = DateTime.UtcNow },
+        };
+
+        context.Testemunhos.AddRange(testemunhos);
+        await context.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Cria contactos de demonstração para o painel de administração.
+    /// </summary>
+    private static async Task SeedContactosAsync(ApplicationDbContext context)
+    {
+        if (await context.Contactos.AnyAsync()) return;
+
+        var contactos = new List<Contacto>
+        {
+            new() { Nome = "Beatriz Santos",   Email = "beatriz.santos@email.com",   Telefone = "+351 916 123 456", DataEvento = new DateTime(2026, 9, 12), TipoServico = "Casamento",        Mensagem = "Bom dia! Estamos a planear o nosso casamento para setembro de 2026 e ficámos encantados com o vosso trabalho. Podiam enviar-nos informação sobre os pacotes disponíveis?",  Lido = true,  DataEnvio = DateTime.UtcNow.AddDays(-5) },
+            new() { Nome = "Ricardo Ferreira", Email = "ricardo.ferreira@email.com", Telefone = "+351 962 789 012", DataEvento = new DateTime(2026, 6, 20), TipoServico = "Pré-Casamento",    Mensagem = "Olá! Queríamos fazer uma sessão de pré-casamento em Lisboa no próximo mês. Têm disponibilidade? Somos fãs do vosso trabalho!",                                              Lido = false, DataEnvio = DateTime.UtcNow.AddDays(-2) },
+            new() { Nome = "Marta Oliveira",   Email = "marta.oliveira@email.com",   Telefone = null,               DataEvento = null,                      TipoServico = "Trash the Dress",  Mensagem = "Casámos em maio e gostaríamos muito de fazer uma sessão Trash the Dress antes do verão acabar. É possível orçamentar?",                                                       Lido = false, DataEnvio = DateTime.UtcNow.AddDays(-1) },
+        };
+
+        context.Contactos.AddRange(contactos);
         await context.SaveChangesAsync();
     }
 }

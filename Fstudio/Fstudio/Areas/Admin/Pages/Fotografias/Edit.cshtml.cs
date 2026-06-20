@@ -41,11 +41,29 @@ public class EditModel : PageModel
         return Page();
     }
 
+    private static readonly string[] _tiposPermitidos = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    private const long _tamanhoMaximo = 10 * 1024 * 1024; // 10 MB
+
     public async Task<IActionResult> OnPostAsync(IFormFile? ImagemFile)
     {
         Categorias = new SelectList(
             await _context.Categorias.Where(c => c.Activa).OrderBy(c => c.Nome).ToListAsync(),
             "Id", "Nome");
+
+        if (ImagemFile != null && ImagemFile.Length > 0)
+        {
+            if (!_tiposPermitidos.Contains(ImagemFile.ContentType.ToLower()))
+            {
+                ModelState.AddModelError("ImagemFile", "Formato não suportado. Use JPG, PNG, WebP ou GIF.");
+                return Page();
+            }
+
+            if (ImagemFile.Length > _tamanhoMaximo)
+            {
+                ModelState.AddModelError("ImagemFile", "A imagem não pode exceder 10 MB.");
+                return Page();
+            }
+        }
 
         if (!ModelState.IsValid)
         {
