@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Novo Cliente";
 }
+@using Fstudio.Data.Models
 
 <div class="mb-4">
     <a asp-page="Index" class="btn btn-outline-secondary">
@@ -61,10 +62,9 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label asp-for="Cliente.Estado" class="form-label"></label>
-                            <select asp-for="Cliente.Estado" class="form-select">
-                                <option value="Ativo">Ativo</option>
-                                <option value="Concluído">Concluído</option>
-                                <option value="Cancelado">Cancelado</option>
+                            <select asp-for="Cliente.Estado"
+                                    class="form-select"
+                                    asp-items="Html.GetEnumSelectList<EstadoCliente>()">
                             </select>
                             <span asp-validation-for="Cliente.Estado" class="text-danger"></span>
                         </div>

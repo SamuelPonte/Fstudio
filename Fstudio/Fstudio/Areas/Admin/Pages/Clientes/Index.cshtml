@@ -37,7 +37,9 @@
                             <span class="badge bg-secondary">@cliente.ClienteFotografias.Count fotos</span>
                         </td>
                         <td>
-                            <span class="badge @(cliente.Estado == Data.Models.EstadoCliente.Ativo ? "bg-success" : "bg-secondary")">
+                            <span class="badge @(cliente.Estado == Data.Models.EstadoCliente.Ativo ? "bg-success" :
+                                                      cliente.Estado == Data.Models.EstadoCliente.Pendente ? "bg-warning text-dark" :
+                                                      "bg-danger")">
                                 @cliente.Estado
                             </span>
                         </td>
