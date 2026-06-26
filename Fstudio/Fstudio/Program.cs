@@ -28,9 +28,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 // Registar o DbContext no container de Dependency Injection
-// UseSqlite - utiliza SQLite como base de dados (ficheiro local)
+// UseSqlServer - utiliza SQL Server como base de dados
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(connectionString));
+    options.UseSqlServer(connectionString));
 
 // Adicionar página de exceções para desenvolvimento (mostra erros de BD)
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();

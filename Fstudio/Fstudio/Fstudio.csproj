@@ -55,18 +55,19 @@
       Provider SQLite para Entity Framework Core
       Permite usar ficheiro SQLite como base de dados (fstudio.db)
     -->
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.9" />
+   <!-- <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.9" /> -->
 
     <!--
       Microsoft.EntityFrameworkCore.Tools
       Ferramentas CLI para Entity Framework Core
       Comandos: dotnet ef migrations add, dotnet ef database update
     -->
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.9">
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.9" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.3" />
+    <!-- <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.3" /> -->
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.1" />
   </ItemGroup>
   <ItemGroup>

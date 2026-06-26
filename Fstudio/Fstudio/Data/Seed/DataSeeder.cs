@@ -238,15 +238,76 @@ public static class DataSeeder
         int idDetalhes      = categorias.FirstOrDefault(c => c.Slug == "detalhes")?.Id      ?? categorias[0].Id;
 
         // URLs de imagens de demonstração (Unsplash — uso livre)
+        // Imagens de demonstração guardadas localmente em wwwroot/uploads/fotografias/demo
         var fotografias = new List<Fotografia>
-        {
-            new() { Titulo = "Ana & Miguel — Quinta de Monserrate",    CategoriaId = idCasamentos,   ImagemUrl = "https://images.unsplash.com/photo-1519741497674-611481863552?w=800", ThumbnailUrl = "https://images.unsplash.com/photo-1519741497674-611481863552?w=400", VisivelPortfolio = true, Destaque = true,  DataSessao = new DateTime(2025, 6, 14), DataCriacao = DateTime.UtcNow },
-            new() { Titulo = "Sofia & João — Palácio de Queluz",       CategoriaId = idCasamentos,   ImagemUrl = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800", ThumbnailUrl = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=400", VisivelPortfolio = true, Destaque = true,  DataSessao = new DateTime(2025, 9, 6),  DataCriacao = DateTime.UtcNow },
-            new() { Titulo = "Inês & Rui — Sessão Pré-Casamento",      CategoriaId = idPreCasamento, ImagemUrl = "https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=800", ThumbnailUrl = "https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=400", VisivelPortfolio = true, Destaque = false, DataSessao = new DateTime(2025, 4, 20), DataCriacao = DateTime.UtcNow },
-            new() { Titulo = "Mariana & Tiago — Noivado na Praia",     CategoriaId = idNoivados,     ImagemUrl = "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800", ThumbnailUrl = "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=400", VisivelPortfolio = true, Destaque = false, DataSessao = new DateTime(2025, 2, 14), DataCriacao = DateTime.UtcNow },
-            new() { Titulo = "Detalhes — Anéis e Convites",            CategoriaId = idDetalhes,     ImagemUrl = "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=800", ThumbnailUrl = "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=400", VisivelPortfolio = true, Destaque = false, DataSessao = new DateTime(2025, 6, 14), DataCriacao = DateTime.UtcNow },
-            new() { Titulo = "Catarina & Paulo — Jardim do Palácio",   CategoriaId = idCasamentos,   ImagemUrl = "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800", ThumbnailUrl = "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=400", VisivelPortfolio = true, Destaque = false, DataSessao = new DateTime(2025, 7, 19), DataCriacao = DateTime.UtcNow },
-        };
+{
+    new()
+    {
+        Titulo = "Ana & Miguel — Quinta de Monserrate",
+        CategoriaId = idCasamentos,
+        ImagemUrl = "/uploads/fotografias/demo/casamento-01.jpg",
+        ThumbnailUrl = "/uploads/fotografias/demo/casamento-01.jpg",
+        VisivelPortfolio = true,
+        Destaque = true,
+        DataSessao = new DateTime(2025, 6, 14),
+        DataCriacao = DateTime.UtcNow
+    },
+    new()
+    {
+        Titulo = "Sofia & João — Palácio de Queluz",
+        CategoriaId = idCasamentos,
+        ImagemUrl = "/uploads/fotografias/demo/casamento-02.jpg",
+        ThumbnailUrl = "/uploads/fotografias/demo/casamento-02.jpg",
+        VisivelPortfolio = true,
+        Destaque = true,
+        DataSessao = new DateTime(2025, 9, 6),
+        DataCriacao = DateTime.UtcNow
+    },
+    new()
+    {
+        Titulo = "Inês & Rui — Sessão Pré-Casamento",
+        CategoriaId = idPreCasamento,
+        ImagemUrl = "/uploads/fotografias/demo/pre-casamento-01.jpg",
+        ThumbnailUrl = "/uploads/fotografias/demo/pre-casamento-01.jpg",
+        VisivelPortfolio = true,
+        Destaque = false,
+        DataSessao = new DateTime(2025, 4, 20),
+        DataCriacao = DateTime.UtcNow
+    },
+    new()
+    {
+        Titulo = "Mariana & Tiago — Noivado na Praia",
+        CategoriaId = idNoivados,
+        ImagemUrl = "/uploads/fotografias/demo/noivado-01.jpg",
+        ThumbnailUrl = "/uploads/fotografias/demo/noivado-01.jpg",
+        VisivelPortfolio = true,
+        Destaque = false,
+        DataSessao = new DateTime(2025, 2, 14),
+        DataCriacao = DateTime.UtcNow
+    },
+    new()
+    {
+        Titulo = "Detalhes — Anéis e Convites",
+        CategoriaId = idDetalhes,
+        ImagemUrl = "/uploads/fotografias/demo/detalhes-01.jpg",
+        ThumbnailUrl = "/uploads/fotografias/demo/detalhes-01.jpg",
+        VisivelPortfolio = true,
+        Destaque = false,
+        DataSessao = new DateTime(2025, 6, 14),
+        DataCriacao = DateTime.UtcNow
+    },
+    new()
+    {
+        Titulo = "Catarina & Paulo — Jardim do Palácio",
+        CategoriaId = idCasamentos,
+        ImagemUrl = "/uploads/fotografias/demo/casamento-03.jpg",
+        ThumbnailUrl = "/uploads/fotografias/demo/casamento-03.jpg",
+        VisivelPortfolio = true,
+        Destaque = false,
+        DataSessao = new DateTime(2025, 7, 19),
+        DataCriacao = DateTime.UtcNow
+    }
+};
 
         context.Fotografias.AddRange(fotografias);
         await context.SaveChangesAsync();
