@@ -36,7 +36,20 @@ public class IndexModel : PageModel
 
         if (Cliente == null)
         {
-            return RedirectToPage("/Index");
+            TempData["Aviso"] = "A sua conta ainda não está associada a um cliente.";
+            return RedirectToPage("/Index", new { area = "" });
+        }
+
+        if (Cliente.Estado == EstadoCliente.Pendente)
+        {
+            TempData["Aviso"] = "A sua conta ainda está pendente de aprovação pelo administrador.";
+            return RedirectToPage("/Index", new { area = "" });
+        }
+
+        if (Cliente.Estado == EstadoCliente.Inativo)
+        {
+            TempData["Aviso"] = "A sua conta encontra-se inativa.";
+            return RedirectToPage("/Index", new { area = "" });
         }
 
         Fotografias = await _context.ClienteFotografias
