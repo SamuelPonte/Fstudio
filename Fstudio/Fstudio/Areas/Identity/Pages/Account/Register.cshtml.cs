@@ -8,6 +8,7 @@ using Fstudio.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Fstudio.Data;
 
 namespace Fstudio.Areas.Identity.Pages.Account;
 
@@ -17,17 +18,20 @@ public class RegisterModel : PageModel
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUserStore<ApplicationUser> _userStore;
     private readonly ILogger<RegisterModel> _logger;
+    private readonly ApplicationDbContext _context;
 
     public RegisterModel(
         UserManager<ApplicationUser> userManager,
         IUserStore<ApplicationUser> userStore,
         SignInManager<ApplicationUser> signInManager,
-        ILogger<RegisterModel> logger)
+        ILogger<RegisterModel> logger,
+        ApplicationDbContext context)
     {
         _userManager = userManager;
         _userStore = userStore;
         _signInManager = signInManager;
         _logger = logger;
+        _context = context;
     }
 
     [BindProperty]
@@ -87,6 +91,19 @@ public class RegisterModel : PageModel
 
                 // Atribuir role Cliente por defeito
                 await _userManager.AddToRoleAsync(user, "Cliente");
+
+                // Criar registo na tabela Clientes com estado Pendente
+                var cliente = new Data.Models.Cliente
+                {
+                    Nome = Input.NomeCompleto,
+                    Email = Input.Email,
+                    UserId = user.Id,
+                    Estado = EstadoCliente.Pendente,
+                    DataCriacao = DateTime.UtcNow
+                };
+
+                _context.Clientes.Add(cliente);
+                await _context.SaveChangesAsync();
 
                 // Fazer login automático
                 await _signInManager.SignInAsync(user, isPersistent: false);
