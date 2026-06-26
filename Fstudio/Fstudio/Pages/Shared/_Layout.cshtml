@@ -482,6 +482,18 @@
             background-repeat: no-repeat;
             background-size: cover;
         }
+
+        .alert-tempdata {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            min-width: 320px;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+         }
     </style>
     @RenderSection("Styles", required: false)
 </head>
@@ -542,6 +554,36 @@
         </div>
     </nav>
 
+    @if (TempData["Aviso"] != null)
+    {
+        <div class="alert-tempdata alert alert-warning alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            @TempData["Aviso"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        </div>
+    }
+
+    @if (TempData["Erro"] != null)
+    {
+        <div class="alert-tempdata alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-x-circle me-2"></i>
+            @TempData["Erro"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        </div>
+    }
+
+    @if (TempData["Sucesso"] != null)
+    {
+        <div class="alert-tempdata alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>
+            @TempData["Sucesso"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        </div>
+    }
+
+    <main>
+        @RenderBody()
+    </main>
     <main>
         @RenderBody()
     </main>

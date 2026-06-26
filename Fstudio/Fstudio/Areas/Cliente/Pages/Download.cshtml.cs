@@ -41,7 +41,20 @@ public class DownloadModel : PageModel
 
         if (cliente == null)
         {
-            return RedirectToPage("/Index");
+            TempData["Aviso"] = "A sua conta ainda não está associada a um cliente.";
+            return RedirectToPage("/Index", new { area = "" });
+        }
+
+        if (cliente.Estado == EstadoCliente.Pendente)
+        {
+            TempData["Aviso"] = "A sua conta ainda está pendente de aprovação pelo administrador.";
+            return RedirectToPage("/Index", new { area = "" });
+        }
+
+        if (cliente.Estado == EstadoCliente.Inativo)
+        {
+            TempData["Aviso"] = "A sua conta encontra-se inativa.";
+            return RedirectToPage("/Index", new { area = "" });
         }
 
         if (id.HasValue)
