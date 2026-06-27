@@ -356,7 +356,7 @@ dotnet build Fstudio/Fstudio/Fstudio.csproj
 | Nome | Número | Contribuições principais |
 |---|---|---|
 | André Vassalo | aluno27454 | Páginas públicas, Identity, área de administração, API REST, seed de dados, validação de uploads, Azure |
-| Samuel Ponte | aluno27455 | Modelos de dados, DbContext, SignalR, área do cliente, SQL Server, responsividade admin |
+| Samuel Ponte | aluno27227 | Modelos de dados, DbContext, SignalR, área do cliente, SQL Server, responsividade admin |
 
 **Instituto Politécnico de Tomar**  
 Licenciatura em Engenharia Informática — 2.º ano, 2.º semestre  
