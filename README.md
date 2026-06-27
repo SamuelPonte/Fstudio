@@ -24,7 +24,7 @@ Instituto Politécnico de Tomar
 
 ## Descrição do Projeto
 
-O **Fstudio** é uma aplicação web para um estúdio de fotografia e vídeo de casamentos sediado em Lisboa, Portugal. O projeto é um redesign do site real [fstudio.info](http://fstudio.info).
+O **Fstudio** é uma aplicação web para um estúdio de fotografia e vídeo de casamentos sediado em Tomar, Portugal. O projeto é um redesign do site real [fstudio.info](http://fstudio.info).
 
 A aplicação permite:
 - Apresentar publicamente o portfólio de fotografias e filmes do estúdio
@@ -356,7 +356,7 @@ dotnet build Fstudio/Fstudio/Fstudio.csproj
 | Nome | Número | Contribuições principais |
 |---|---|---|
 | André Vassalo | aluno27454 | Páginas públicas, Identity, área de administração, API REST, seed de dados, validação de uploads, Azure |
-| Samuel Ponte | aluno27455 | Modelos de dados, DbContext, SignalR, área do cliente, SQL Server, responsividade admin |
+| Samuel Ponte | aluno27227 | Modelos de dados, DbContext, SignalR, área do cliente, SQL Server, responsividade admin |
 
 **Instituto Politécnico de Tomar**  
 Licenciatura em Engenharia Informática — 2.º ano, 2.º semestre  
