@@ -24,7 +24,7 @@ Instituto Politécnico de Tomar
 
 ## Descrição do Projeto
 
-O **Fstudio** é uma aplicação web para um estúdio de fotografia e vídeo de casamentos sediado em Lisboa, Portugal. O projeto é um redesign do site real [fstudio.info](http://fstudio.info).
+O **Fstudio** é uma aplicação web para um estúdio de fotografia e vídeo de casamentos sediado em Tomar, Portugal. O projeto é um redesign do site real [fstudio.info](http://fstudio.info).
 
 A aplicação permite:
 - Apresentar publicamente o portfólio de fotografias e filmes do estúdio

@@ -1,9 +1,15 @@
+@* ============================================================================
+   Admin/Fotografias/Create.cshtml
+   Formulário de criação de fotografias com suporte a upload múltiplo
+   Permite selecionar várias imagens de uma vez via clique ou drag & drop
+   ============================================================================ *@
 @page
 @model CreateModel
 @{
     ViewData["Title"] = "Nova Fotografia";
 }
 
+@* Botão de regresso à listagem *@
 <div class="mb-4">
     <a asp-page="Index" class="btn btn-outline-secondary">
         <i class="bi bi-arrow-left me-2"></i>Voltar
@@ -11,30 +17,47 @@
 </div>
 
 <div class="row">
+    @* ── Coluna principal (formulário) ── *@
     <div class="col-md-8">
         <div class="card">
             <div class="card-header">
                 <h5 class="mb-0"><i class="bi bi-image me-2"></i>Nova Fotografia</h5>
             </div>
             <div class="card-body">
-                <form method="post" enctype="multipart/form-data">
+                @* enctype="multipart/form-data" é obrigatório para envio de ficheiros *@
+                <form method="post" enctype="multipart/form-data" id="formFotografia">
+
+                    @* Erros de validação do modelo (servidor) *@
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
+                    @* ── Título ── *@
                     <div class="mb-3">
                         <label asp-for="Fotografia.Titulo" class="form-label"></label>
-                        <input asp-for="Fotografia.Titulo" class="form-control" />
+                        <input asp-for="Fotografia.Titulo" class="form-control" id="tituloInput"
+                               placeholder="Ex: Casamento Silva — será numerado automaticamente se forem várias fotos" />
+
+                        @* Dica de numeração automática — só aparece quando há mais de 1 foto selecionada *@
+                        <div class="form-text" id="tituloHint" style="display:none;">
+                            <i class="bi bi-info-circle me-1"></i>
+                            As fotos serão guardadas como "<span id="tituloExemplo"></span> 1",
+                            "<span id="tituloExemplo2"></span> 2", etc.
+                        </div>
                         <span asp-validation-for="Fotografia.Titulo" class="text-danger"></span>
                     </div>
 
+                    @* ── Descrição (opcional, aplica-se a todas as fotos) ── *@
                     <div class="mb-3">
                         <label asp-for="Fotografia.Descricao" class="form-label"></label>
-                        <textarea asp-for="Fotografia.Descricao" class="form-control" rows="3"></textarea>
+                        <textarea asp-for="Fotografia.Descricao" class="form-control" rows="2"
+                                  placeholder="Descrição opcional (aplicada a todas as fotos)"></textarea>
                         <span asp-validation-for="Fotografia.Descricao" class="text-danger"></span>
                     </div>
 
+                    @* ── Categoria e Data de Sessão ── *@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label asp-for="Fotografia.CategoriaId" class="form-label"></label>
+                            @* asp-items liga a SelectList do PageModel ao dropdown *@
                             <select asp-for="Fotografia.CategoriaId" asp-items="Model.Categorias" class="form-select">
                                 <option value="">Selecione uma categoria</option>
                             </select>
@@ -47,17 +70,57 @@
                         </div>
                     </div>
 
+                    @* ── Zona de Upload de Imagens ── *@
                     <div class="mb-3">
-                        <label class="form-label">Imagem</label>
+                        <label class="form-label">
+                            Imagens
+                            <span class="badge bg-secondary ms-1">JPG, PNG, WebP — máx. 10 MB cada</span>
+                        </label>
+
+                        @* Zona de drag & drop visível ao utilizador.
+                           O onclick abre o input de ficheiros escondido. *@
+                        <div id="dropZone"
+                             class="border rounded-3 p-4 text-center"
+                             style="border-style: dashed !important; cursor: pointer; background: #f8f9fa; transition: all 0.2s;"
+                             onclick="document.getElementById('ImagemFiles').click()">
+                            <i class="bi bi-cloud-upload fs-1 text-muted"></i>
+                            <p class="mb-1 mt-2">Arrasta as fotos para aqui ou <strong>clica para selecionar</strong></p>
+                            <p class="text-muted small mb-0">Podes selecionar várias fotos de uma vez</p>
+                        </div>
+
+                        @* Input real de ficheiros — escondido porque o browser tem design fixo.
+                           O atributo "multiple" permite selecionar vários ficheiros de uma vez.
+                           O atributo "name" deve coincidir com o parâmetro do OnPostAsync (ImagemFiles). *@
                         <input type="file"
-                               name="ImagemFile"
-                               id="ImagemFile"
-                               class="form-control"
-                               accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" 
-                               required />
-                        @Html.ValidationMessage("ImagemFile", "", new { @class = "text-danger" })
+                               name="ImagemFiles"
+                               id="ImagemFiles"
+                               class="d-none"
+                               accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                               multiple />
+
+                        @* Mensagem de erro de validação do servidor para o campo ImagemFiles *@
+                        @Html.ValidationMessage("ImagemFiles", "", new { @class = "text-danger d-block mt-1" })
+
+                        @* Grelha de preview — escondida até o utilizador selecionar ficheiros *@
+                        <div id="previewContainer" class="mt-3" style="display:none;">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="fw-semibold">
+                                    <i class="bi bi-images me-1"></i>
+                                    <span id="totalFotos">0</span> foto(s) selecionada(s)
+                                </span>
+                                @* Botão para limpar a seleção — chama limparSelecao() *@
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="limparSelecao()">
+                                    <i class="bi bi-x-circle me-1"></i>Limpar
+                                </button>
+                            </div>
+                            @* Grelha responsiva — auto-fill preenche colunas de mínimo 100px *@
+                            <div id="previewGrid"
+                                 style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px;">
+                            </div>
+                        </div>
                     </div>
 
+                    @* ── Checkboxes de Destaque e Visibilidade ── *@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <div class="form-check">
@@ -73,9 +136,28 @@
                         </div>
                     </div>
 
+                    @* ── Barra de Progresso ──
+                       Escondida por defeito. Aparece quando o formulário é submetido
+                       para dar feedback visual durante o upload (especialmente com muitas fotos). *@
+                    <div id="progressContainer" class="mb-3" style="display:none;">
+                        <div class="d-flex justify-content-between mb-1">
+                            <small class="text-muted">A carregar fotografias...</small>
+                            <small id="progressText" class="text-muted">0%</small>
+                        </div>
+                        <div class="progress">
+                            @* progress-bar-striped + animated: efeito visual de carregamento *@
+                            <div id="progressBar"
+                                 class="progress-bar progress-bar-striped progress-bar-animated"
+                                 role="progressbar" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    @* ── Botões de Ação ── *@
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check-lg me-2"></i>Criar Fotografia
+                        <button type="submit" class="btn btn-primary" id="btnSubmit">
+                            <i class="bi bi-check-lg me-2"></i>
+                            @* O texto muda dinamicamente via JS consoante o número de fotos *@
+                            <span id="btnTexto">Guardar Fotografia</span>
                         </button>
                         <a asp-page="Index" class="btn btn-outline-secondary">Cancelar</a>
                     </div>
@@ -83,8 +165,181 @@
             </div>
         </div>
     </div>
+
+    @* ── Painel lateral de ajuda ── *@
+    <div class="col-md-4">
+        <div class="card border-info">
+            <div class="card-header bg-info bg-opacity-10 text-info">
+                <i class="bi bi-lightbulb me-2"></i>Dicas de upload
+            </div>
+            <div class="card-body small">
+                <ul class="mb-0 ps-3">
+                    <li class="mb-2">Podes selecionar <strong>várias fotos de uma vez</strong> (Ctrl+A ou Ctrl+clique)</li>
+                    <li class="mb-2">O título será numerado automaticamente: "Casamento X 1", "Casamento X 2"…</li>
+                    <li class="mb-2">A categoria, data e configurações aplicam-se a <strong>todas as fotos</strong></li>
+                    <li class="mb-2">Formatos: JPG, PNG, WebP</li>
+                    <li>Tamanho máximo: <strong>10 MB por foto</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
+    @* Validação do lado do cliente (jQuery Validation) *@
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // ── Referências aos elementos do DOM ─────────────────────────────
+        const input            = document.getElementById('ImagemFiles');
+        const dropZone         = document.getElementById('dropZone');
+        const previewContainer = document.getElementById('previewContainer');
+        const previewGrid      = document.getElementById('previewGrid');
+        const totalFotos       = document.getElementById('totalFotos');
+        const btnTexto         = document.getElementById('btnTexto');
+        const tituloInput      = document.getElementById('tituloInput');
+        const tituloHint       = document.getElementById('tituloHint');
+
+        // ── Evento: ficheiros selecionados via clique ─────────────────────
+        // Disparado quando o utilizador escolhe ficheiros pelo explorador de ficheiros
+        input.addEventListener('change', function () {
+            mostrarPreview(this.files);
+        });
+
+        // ── Drag & Drop: arrastar ficheiros para a zona ───────────────────
+
+        // dragover: ficheiro está a ser arrastado sobre a zona
+        // e.preventDefault() é obrigatório para permitir o "drop"
+        dropZone.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            this.style.borderColor = '#0d6efd'; // Azul Bootstrap ao passar por cima
+            this.style.background  = '#e8f0fe';
+        });
+
+        // dragleave: ficheiro saiu da zona sem largar
+        dropZone.addEventListener('dragleave', function () {
+            this.style.borderColor = ''; // Repor estilo original
+            this.style.background  = '#f8f9fa';
+        });
+
+        // drop: ficheiro largado na zona
+        dropZone.addEventListener('drop', function (e) {
+            e.preventDefault(); // Evitar que o browser abra o ficheiro
+            this.style.borderColor = '';
+            this.style.background  = '#f8f9fa';
+
+            // DataTransfer: API do browser para transferência de ficheiros via drag & drop
+            // Filtramos apenas imagens (ignoramos PDFs, ZIPs, etc.)
+            const dt = new DataTransfer();
+            for (const file of e.dataTransfer.files) {
+                if (file.type.match('image.*')) dt.items.add(file);
+            }
+
+            // Atribuir os ficheiros filtrados ao input real para que sejam enviados no POST
+            input.files = dt.files;
+            mostrarPreview(input.files);
+        });
+
+        // ── Evento: actualizar exemplo de numeração ao escrever o título ─
+        tituloInput.addEventListener('input', function () {
+            // Só mostra o exemplo se já houver múltiplas fotos selecionadas
+            if (input.files && input.files.length > 1) {
+                document.getElementById('tituloExemplo').textContent  = this.value || 'Título';
+                document.getElementById('tituloExemplo2').textContent = this.value || 'Título';
+            }
+        });
+
+        // ── Função: actualizar interface após selecção de ficheiros ───────
+        // files: FileList do input (pode ser null se não há ficheiros)
+        function mostrarPreview(files) {
+            previewGrid.innerHTML = ''; // Limpar previews anteriores
+
+            // Se não há ficheiros, repor o estado inicial
+            if (!files || files.length === 0) {
+                previewContainer.style.display = 'none';
+                btnTexto.textContent           = 'Guardar Fotografia';
+                tituloHint.style.display       = 'none';
+                dropZone.innerHTML = `
+                    <i class="bi bi-cloud-upload fs-1 text-muted"></i>
+                    <p class="mb-1 mt-2">Arrasta as fotos para aqui ou <strong>clica para selecionar</strong></p>
+                    <p class="text-muted small mb-0">Podes selecionar várias fotos de uma vez</p>`;
+                return;
+            }
+
+            // Actualizar contagem e texto do botão
+            totalFotos.textContent = files.length;
+            btnTexto.textContent   = files.length === 1
+                ? 'Guardar Fotografia'
+                : `Guardar ${files.length} Fotografias`;
+
+            // Mostrar dica de numeração automática quando há mais de 1 foto
+            if (files.length > 1) {
+                tituloHint.style.display = 'block';
+                document.getElementById('tituloExemplo').textContent  = tituloInput.value || 'Título';
+                document.getElementById('tituloExemplo2').textContent = tituloInput.value || 'Título';
+            } else {
+                tituloHint.style.display = 'none';
+            }
+
+            // Gerar miniatura de preview para cada ficheiro selecionado
+            // FileReader lê o ficheiro localmente no browser (sem enviar ao servidor)
+            Array.from(files).forEach((file, i) => {
+                const reader = new FileReader();
+
+                // onload: executado quando o FileReader terminou de ler o ficheiro
+                reader.onload = function (e) {
+                    const div = document.createElement('div');
+                    div.style.cssText = 'position:relative;aspect-ratio:1;overflow:hidden;border-radius:6px;';
+
+                    // Miniatura com sobreposição do tamanho do ficheiro
+                    div.innerHTML = `
+                        <img src="${e.target.result}"
+                             style="width:100%;height:100%;object-fit:cover;"
+                             title="${file.name}" />
+                        <span style="position:absolute;bottom:2px;right:4px;background:rgba(0,0,0,0.6);
+                                     color:#fff;font-size:10px;padding:1px 4px;border-radius:3px;">
+                            ${(file.size / 1024 / 1024).toFixed(1)}MB
+                        </span>`;
+                    previewGrid.appendChild(div);
+                };
+
+                // readAsDataURL: converte o ficheiro para uma URL de dados (base64)
+                // usada no atributo src da <img> para preview local
+                reader.readAsDataURL(file);
+            });
+
+            previewContainer.style.display = 'block';
+
+            // Actualizar dropzone para mostrar que há fotos prontas
+            dropZone.innerHTML = `
+                <i class="bi bi-check-circle-fill fs-2 text-success"></i>
+                <p class="mb-0 mt-2"><strong>${files.length}</strong> foto(s) pronta(s) para upload</p>
+                <p class="text-muted small mb-0">Clica para mudar a seleção</p>`;
+        }
+
+        // ── Função: limpar toda a selecção de ficheiros ───────────────────
+        function limparSelecao() {
+            input.value = ''; // Repor o input (não é possível remover ficheiros individuais)
+            mostrarPreview(null);
+        }
+
+        // ── Evento: mostrar barra de progresso ao submeter o formulário ───
+        document.getElementById('formFotografia').addEventListener('submit', function () {
+            if (input.files && input.files.length > 0) {
+                // Mostrar barra de progresso e desactivar botão para evitar duplo envio
+                document.getElementById('progressContainer').style.display = 'block';
+                document.getElementById('btnSubmit').disabled = true;
+
+                // Simular progresso visual até 90% — o servidor não fornece progresso granular.
+                // A barra chega a 100% quando o servidor responde e a página recarrega.
+                let p = 0;
+                const interval = setInterval(() => {
+                    p = Math.min(p + Math.random() * 8, 90); // Avança aleatoriamente até 90%
+                    document.getElementById('progressBar').style.width = p + '%';
+                    document.getElementById('progressText').textContent = Math.round(p) + '%';
+                    if (p >= 90) clearInterval(interval); // Parar em 90% — aguardar resposta
+                }, 300); // Actualizar a cada 300ms
+            }
+        });
+    </script>
 }
