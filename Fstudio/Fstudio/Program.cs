@@ -186,7 +186,12 @@ app.UseAuthorization();
 // MAPEAMENTO DE ENDPOINTS
 // ============================================================================
 
-// Servir ficheiros estáticos (CSS, JS, imagens de wwwroot)
+// UseStaticFiles serve TODOS os ficheiros de wwwroot, incluindo uploads dinâmicos.
+// MapStaticAssets serve apenas os assets conhecidos em tempo de compilação (CSS, JS)
+// com compressão e cache otimizados. Ambos são necessários:
+// - UseStaticFiles → imagens carregadas pelo admin (/uploads/fotografias/...)
+// - MapStaticAssets → css, js, imagens do projeto com headers de cache
+app.UseStaticFiles();
 app.MapStaticAssets();
 
 // Mapear Razor Pages
